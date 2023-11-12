@@ -18,8 +18,10 @@ public class Size {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int size_value;
+    @Column(name = "size_value")
+    private int sizeValue;
 
     @OneToMany(mappedBy = "size", cascade = CascadeType.ALL)
     private List<ShoesVariation> shoesVariationList;
 }
+

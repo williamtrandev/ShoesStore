@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@Table(name = "shoes_order")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

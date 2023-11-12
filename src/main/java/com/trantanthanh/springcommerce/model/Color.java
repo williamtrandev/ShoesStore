@@ -18,8 +18,12 @@ public class Color {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String color_value;
+    @Column(name = "color_value")
+    private String colorValue;
+
+    @Column(name = "color_code")
+    private String colorCode;
 
     @OneToMany(mappedBy = "color", cascade = CascadeType.ALL)
-    private List<ShoesVariation> shoesVariationList;
+    private List<ShoesColor> shoesColorList;
 }

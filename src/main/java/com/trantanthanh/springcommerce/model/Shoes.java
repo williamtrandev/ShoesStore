@@ -20,12 +20,13 @@ public class Shoes {
 
     private String name;
 
-    private String desc;
+    @Column(length = 2000)
+    private String description;
 
     private double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shoes_id")
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,6 +34,6 @@ public class Shoes {
     private Category category;
 
     @OneToMany(mappedBy = "shoes", cascade = CascadeType.ALL)
-    private List<ShoesVariation> shoesVariationList;
+    private List<ShoesColor> shoesColorList;
 
 }

@@ -6,19 +6,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Image {
+@Table(name = "shoes_color")
+public class ShoesColor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String path;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shoes_id")
+    private Shoes shoes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shoes_variation_id")
-    private ShoesVariation shoesVariation;
+    @JoinColumn(name = "color_id")
+    private Color color;
+
+    @Column(name = "image_path")
+    private String imagePath;
+
 }
