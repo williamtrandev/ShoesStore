@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: page(title=${title})}">
+<head>
+
+</head>
+<body>
+
+<th:block th:fragment="content">
+    <div class="container">
+        <div class="row mb-3">
+            <h3>Có <span th:text="${shoesList.size()}"></span> kết quả được tìm thấy</h3>
+        </div>
+        <div class="row mb-5">
+            <th:block th:each="shoes : ${shoesList}">
+                <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+                    <div class="block-4 text-center border shoes-card">
+                        <figure class="block-4-image">
+                            <a th:href="@{'/shoes/' + ${shoes.id}}"><img th:src="@{/images/{imagePath}(imagePath=${shoes.shoesColorList[0].imagePath})}" alt="Image placeholder" class="img-fluid img-shoes"></a>
+                        </figure>
+                        <div class="block-4-text p-4">
+                            <h3 class="mb-1"><a href="shop-single.html" th:text="${shoes.name}"></a></h3>
+                            <th:block th:each="shoesColor : ${shoes.shoesColorList}">
+                                <span class="color d-inline-block rounded-circle mr-1 border dot-shoes-color"
+                                      th:style="'width: 20px; height: 20px; cursor: pointer; background-color: ' + ${shoesColor.color.colorCode}"
+                                      th:attr="data-shoes-image=${shoesColor.imagePath}"
+                                ></span>
+                            </th:block>
+                            <p class="text-primary font-weight-bold" th:text="${#numbers.formatDecimal(shoes.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            $('.shoes-card').on('click', '.dot-shoes-color', function() {
+                const imagePath = $(this).data('shoes-image');
+                $(this).closest('.shoes-card')
+                    .find('.img-shoes').first()
+                    .attr('src', `/images/${imagePath}`);
+            })
+        })
+    </script>
+</th:block>
+
+
+</body>
+
+</html>

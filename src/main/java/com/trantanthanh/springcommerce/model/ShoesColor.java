@@ -30,4 +30,6 @@ public class ShoesColor {
     @Column(name = "image_path")
     private String imagePath;
 
+    @OneToMany(mappedBy = "shoesColor", cascade = CascadeType.ALL)
+    private List<ShoesVariation> shoesVariationList;
 }

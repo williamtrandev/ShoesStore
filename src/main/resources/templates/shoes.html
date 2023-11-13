@@ -14,43 +14,34 @@
 
                 <div class="row">
                     <div class="col-md-12 mb-5">
-                        <div class="float-md-left mb-4"><h2 class="text-black h5">Tất cả sản phẩm</h2></div>
                         <div class="d-flex">
-                            <div class="dropdown mr-1 ml-md-auto">
-                                <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Mới nhất
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-                                    <th:block th:each="category : ${categoryList}">
-                                        <a class="dropdown-item" href="#" th:text="${category.name}"></a>
-                                    </th:block>
-                                </div>
-                            </div>
-                            <div class="btn-group">
+                            <div class="btn-group ml-md-auto">
+                                <button class="btn btn-secondary btn-sm mr-4 btn-all">Tất cả</button>
                                 <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuReference" data-toggle="dropdown">Lọc</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                                    <a class="dropdown-item" href="#">Theo tên, A đến Z</a>
-                                    <a class="dropdown-item" href="#">Theo tên, Z đến A</a>
+                                    <a class="dropdown-item sort-a-z" href="#">Theo tên, A đến Z</a>
+                                    <a class="dropdown-item sort-z-a" href="#">Theo tên, Z đến A</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Theo giá, thấp đến cao</a>
-                                    <a class="dropdown-item" href="#">Theo giá, cao đến thấp</a>
+                                    <a class="dropdown-item sort-low-high" href="#">Theo giá, thấp đến cao</a>
+                                    <a class="dropdown-item sort-high-low" href="#">Theo giá, cao đến thấp</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row mb-5">
+                <div class="row mb-5 wrapper-shoes">
                     <th:block th:each="shoes : ${shoesList}">
                         <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                            <div class="block-4 text-center border">
+                            <div class="block-4 text-center border shoes-card">
                                 <figure class="block-4-image">
-                                    <a href="shop-single.html"><img src="images/cloth_1.jpg" alt="Image placeholder" class="img-fluid"></a>
+                                    <a th:href="@{'/shoes/' + ${shoes.id}}"><img th:src="@{/images/{imagePath}(imagePath=${shoes.shoesColorList[0].imagePath})}" alt="Image placeholder" class="img-fluid img-shoes"></a>
                                 </figure>
                                 <div class="block-4-text p-4">
                                     <h3 class="mb-1"><a href="shop-single.html" th:text="${shoes.name}"></a></h3>
                                     <th:block th:each="shoesColor : ${shoes.shoesColorList}">
-                                        <span class="color d-inline-block rounded-circle mr-1 border"
+                                        <span class="color d-inline-block rounded-circle mr-1 border dot-shoes-color"
                                               th:style="'width: 20px; height: 20px; cursor: pointer; background-color: ' + ${shoesColor.color.colorCode}"
+                                              th:attr="data-shoes-image=${shoesColor.imagePath}"
                                         ></span>
 
                                     </th:block>
@@ -81,14 +72,6 @@
             </div>
 
             <div class="col-md-3 order-1 mb-5 mb-md-0">
-                <div class="border p-4 rounded mb-4">
-                    <h3 class="mb-3 h6 text-uppercase text-black d-block">Phân loại</h3>
-                    <ul class="list-unstyled mb-0">
-                        <th:block th:each="category : ${categoryList}">
-                            <li class="mb-1"><a href="#" class="d-flex"><span th:text="${category.name}"></span></a></li>
-                        </th:block>
-                    </ul>
-                </div>
 
                 <div class="border p-4 rounded mb-4">
                     <div class="mb-4">
@@ -98,78 +81,113 @@
                     </div>
 
                     <div class="mb-4">
-                        <h3 class="mb-3 h6 text-uppercase text-black d-block">Size Giày</h3>
-                        <th:block th:each="size : ${sizeList}">
-                            <label for="s_sm" class="d-flex">
-                                <input type="checkbox" id="s_sm" class="mr-2 mt-1"> <span class="text-black" th:text="${size.sizeValue}"></span>
+                        <h3 class="mb-3 h6 text-uppercase text-black d-block wrapper-brand">Thương hiệu</h3>
+                        <th:block th:each="brand, iterStat : ${brandList}">
+                            <label th:attr="for=${'brand' + iterStat.index}" class="d-flex">
+                                <input type="checkbox" th:id="${'brand' + iterStat.index}" class="mr-2 check-brand" th:attr="data-id=${brand.id}"> <span class="text-black" th:text="${brand.name}"></span>
                             </label>
                         </th:block>
                     </div>
 
                     <div class="mb-4">
                         <h3 class="mb-3 h6 text-uppercase text-black d-block">Màu giày</h3>
-                        <th:block th:each="color : ${colorList}">
-                            <a href="#" class="d-flex color-item align-items-center" >
-                                <span class="color d-inline-block rounded-circle mr-2 border" th:style="'background-color: ' + ${color.colorCode}"></span>
-                                <span class="text-black" th:text="${color.colorValue}"></span>
-                            </a>
+                        <th:block th:each="color, iterStat : ${colorList}">
+                            <label class="d-flex" th:attr="for=${'color' + iterStat.index}">
+                                <input type="checkbox" class="mr-2 check-color" th:id="${'color' + iterStat.index}" th:attr="data-id=${color.id}">
+                                <span class="d-flex color-item align-items-center" >
+                                    <span class="color d-inline-block rounded-circle mx-2 border" th:style="'background-color: ' + ${color.colorCode}"></span>
+                                    <span class="text-black" th:text="${color.colorValue}"></span>
+                                </span>
+                            </label>
+
                         </th:block>
                     </div>
-
+                    <button class="btn btn-primary btn-search">Tìm kiếm</button>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="site-section site-blocks-2">
-                    <div class="row justify-content-center text-center mb-5">
-                        <div class="col-md-7 site-section-heading pt-4">
-                            <h2>Categories</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
-                            <a class="block-2-item" href="#">
-                                <figure class="image">
-                                    <img src="images/women.jpg" alt="" class="img-fluid">
-                                </figure>
-                                <div class="text">
-                                    <span class="text-uppercase">Collections</span>
-                                    <h3>Women</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
-                            <a class="block-2-item" href="#">
-                                <figure class="image">
-                                    <img src="images/children.jpg" alt="" class="img-fluid">
-                                </figure>
-                                <div class="text">
-                                    <span class="text-uppercase">Collections</span>
-                                    <h3>Children</h3>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-                            <a class="block-2-item" href="#">
-                                <figure class="image">
-                                    <img src="images/men.jpg" alt="" class="img-fluid">
-                                </figure>
-                                <div class="text">
-                                    <span class="text-uppercase">Collections</span>
-                                    <h3>Men</h3>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
 
     </div>
+    <script>
+        $(function() {
+            function renderCard(cardList) {
+                let cardHtml = ``;
+                cardList.forEach(shoes => {
+                    let spans = ``;
+                    shoes.shoesColorDTOList.forEach(shoesColor => {
+                        spans += `<span class="color d-inline-block rounded-circle mr-1 border dot-shoes-color"
+                                      style="width: 20px; height: 20px; cursor: pointer; background-color: ${shoesColor.colorDTO.colorCode}"
+                                      data-shoes-image=${shoesColor.imagePath}
+                                    ></span>`;
+                    })
+                    cardHtml += `<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+                            <div class="block-4 text-center border shoes-card">
+                                <figure class="block-4-image">
+                                    <a href="/shoes/${shoes.id}"><img src="/images/${shoes.shoesColorDTOList[0].imagePath}" alt="Image placeholder" class="img-fluid img-shoes"></a>
+                                </figure>
+                                <div class="block-4-text p-4">
+                                    <h3 class="mb-1"><a href="shop-single.html">${shoes.name}</a></h3>
+                                    ${spans}
+                                    <p class="text-primary font-weight-bold">${shoes.price.toLocaleString("vi-VN").replaceAll('.', ',') + "đ"}</p>
+                                </div>
+                            </div>
+                        </div>`;
+
+                })
+                $('.wrapper-shoes').empty().append(cardHtml);
+            }
+            $('.wrapper-shoes').on('click', '.dot-shoes-color', function() {
+                const imagePath = $(this).data('shoes-image');
+                $(this).closest('.shoes-card')
+                    .find('.img-shoes').first()
+                    .attr('src', `images/${imagePath}`);
+            })
+
+            $('.btn-search').click(function() {
+                console.log("clicked");
+                const priceText = $('#amount').val();
+                const parts = priceText.split(' - ');
+                const minPrice = parseInt(parts[0].replace(/[.đ]/g, ''));
+                const maxPrice = parseInt(parts[1].replace(/[.đ]/g, ''));
+                const brandIds = [];
+                $('.check-brand:checked').each(function() {
+                    brandIds.push($(this).data('id'));
+                })
+                const colorIds = [];
+                $('.check-color:checked').each(function() {
+                    colorIds.push($(this).data('id'));
+                })
+                fetch(`/api/v1/filter`, {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ minPrice, maxPrice, brandIds, colorIds })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        renderCard(data);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            })
+
+            $('.btn-all').click(() => {
+                fetch(`/api/v1/shoes`)
+                    .then(res => res.json())
+                    .then(data => {
+                        renderCard(data);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            })
+        })
+    </script>
 </th:block>
 
+
 </body>
+
 </html>

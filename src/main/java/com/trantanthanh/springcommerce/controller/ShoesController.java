@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class ShoesController {
     private final ShoesService shoesService;
     @GetMapping({"", "/"})
     public String index(Model model) {
-        model.addAttribute("title", "Giày");
+        model.addAttribute("title", "Sản phẩm");
 
         // List of brands
         List<Brand> brandList = brandService.getAll();
@@ -29,8 +31,6 @@ public class ShoesController {
         // List of categories
         List<Category> categoryList = categoryService.getAll();
 
-        // List of sizes
-        List<Size> sizeList =  sizeService.getAll();
 
         // List of colors
         List<Color> colorList = colorService.getAll();
@@ -40,9 +40,24 @@ public class ShoesController {
 
         model.addAttribute("brandList", brandList);
         model.addAttribute("categoryList", categoryList);
-        model.addAttribute("sizeList", sizeList);
         model.addAttribute("colorList", colorList);
         model.addAttribute("shoesList", shoesList);
         return "shoes";
+    }
+
+    @GetMapping("/{id}")
+    public String detail(@PathVariable("id") Long id, Model model) {
+        Shoes shoes = shoesService.getOne(id);
+        model.addAttribute("shoes", shoes);
+        model.addAttribute("title", shoes.getName());
+        return "detail";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam(name = "keyword") String name, Model model) {
+        List<Shoes> shoesList = shoesService.searchByName(name);
+        model.addAttribute("shoesList", shoesList);
+        model.addAttribute("title", "Tìm kiếm");
+        return "search";
     }
 }
