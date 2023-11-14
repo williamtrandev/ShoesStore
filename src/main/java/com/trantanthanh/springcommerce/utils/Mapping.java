@@ -1,10 +1,10 @@
 package com.trantanthanh.springcommerce.utils;
 
-import com.trantanthanh.springcommerce.dto.ColorDTO;
-import com.trantanthanh.springcommerce.dto.ShoesColorDTO;
-import com.trantanthanh.springcommerce.dto.ShoesDTO;
+import com.trantanthanh.springcommerce.dto.*;
+import com.trantanthanh.springcommerce.model.CartItem;
 import com.trantanthanh.springcommerce.model.Shoes;
 import com.trantanthanh.springcommerce.model.ShoesColor;
+import com.trantanthanh.springcommerce.model.ShoesVariation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,5 +47,48 @@ public class Mapping {
             shoesColorDTOList.add(convertToShoesColorDTO(shoesColor));
         }
         return shoesColorDTOList;
+    }
+
+    public static ShoesVariationDTO convertToShoesVariationDTO(ShoesVariation shoesVariation) {
+        ShoesVariationDTO shoesVariationDTO = new ShoesVariationDTO();
+        shoesVariationDTO.setId(shoesVariation.getId());
+        shoesVariationDTO.setShoesColorId(shoesVariation.getShoesColor().getId());
+        shoesVariationDTO.setSizeId(shoesVariation.getSize().getId());
+        shoesVariationDTO.setSizeValue(shoesVariation.getSize().getSizeValue());
+        shoesVariationDTO.setStock(shoesVariation.getStock());
+        return shoesVariationDTO;
+    }
+
+    public static List<ShoesVariationDTO> convertToListShoesVariationDTO(List<ShoesVariation> shoesVariationList) {
+        List<ShoesVariationDTO> shoesVariationDTOList = new ArrayList<>();
+        for(ShoesVariation shoesVariation : shoesVariationList) {
+            shoesVariationDTOList.add(convertToShoesVariationDTO(shoesVariation));
+        }
+        return shoesVariationDTOList;
+    }
+
+    public static CartItemDTO convertToCartItemDTO(CartItem cartItem) {
+        CartItemDTO cartItemDTO = new CartItemDTO();
+        // CustomerDTO
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setId(cartItem.getCustomer().getId());
+        customerDTO.setName(cartItem.getCustomer().getName());
+        customerDTO.setAddress(cartItem.getCustomer().getAddress());
+        customerDTO.setPhone(cartItem.getCustomer().getPhone());
+
+        cartItemDTO.setCustomerDTO(customerDTO);
+
+        // ShoesVariationDTO
+        ShoesVariationDTO shoesVariationDTO = new ShoesVariationDTO();
+        shoesVariationDTO.setId(cartItem.getShoesVariation().getId());
+        shoesVariationDTO.setStock(cartItem.getShoesVariation().getStock());
+        shoesVariationDTO.setSizeId(cartItem.getShoesVariation().getSize().getId());
+        shoesVariationDTO.setSizeValue(cartItem.getShoesVariation().getSize().getSizeValue());
+        shoesVariationDTO.setShoesColorId(cartItem.getShoesVariation().getShoesColor().getId());
+
+        cartItemDTO.setShoesVariationDTO(shoesVariationDTO);
+        cartItemDTO.setQuantity(cartItem.getQuantity());
+        cartItemDTO.setPrice(cartItem.getPrice());
+        return cartItemDTO;
     }
 }

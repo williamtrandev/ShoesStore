@@ -1,10 +1,10 @@
 package com.trantanthanh.springcommerce.service.impl;
 
 import com.trantanthanh.springcommerce.api.requestDTO.ShoesRequest;
-import com.trantanthanh.springcommerce.dto.ShoesDTO;
 import com.trantanthanh.springcommerce.model.*;
 import com.trantanthanh.springcommerce.repository.*;
 import com.trantanthanh.springcommerce.service.IShoesService;
+import com.trantanthanh.springcommerce.utils.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +72,7 @@ public class ShoesService implements IShoesService {
 
     @Override
     public Shoes insertOne(ShoesRequest request) {
+        String uploadDir = "src/main/resources/static/images";
         Brand brand = brandRepository.getReferenceById(request.getBrandId());
         Category category = categoryRepository.getReferenceById(request.getCategoryId());
         Shoes shoes = new Shoes();
@@ -90,7 +91,12 @@ public class ShoesService implements IShoesService {
             ShoesColor shoesColor = new ShoesColor();
             shoesColor.setShoes(shoes);
             shoesColor.setColor(color);
-            shoesColor.setImagePath(scJSON.getImagePath());
+            // File name có dạng Tên giày_Id mã màu
+            String filename = shoes.getName().toLowerCase().replaceAll(" ", "")
+                    + "_" + scJSON.getIdColor() + ".png";
+            shoesColor.setImagePath(filename);
+            // Decode ảnh dạng string sang ảnh gốc và Lưu ảnh vào folder
+            FileUploadUtil.saveImageFromBase64(uploadDir, filename, scJSON.getImage());
             shoesColorList.add(shoesColor);
             shoesColorRepository.save(shoesColor);
             // List shoesVariation
@@ -106,8 +112,8 @@ public class ShoesService implements IShoesService {
             }
             shoesVariationRepository.saveAll(shoesVariationList);
             shoesColor.setShoesVariationList(shoesVariationList);
-            shoesColorRepository.save(shoesColor);
         }
+        shoesColorRepository.saveAll(shoesColorList);
         // Set List shoesColor
         shoes.setShoesColorList(shoesColorList);
         return shoesRepository.save(shoes);

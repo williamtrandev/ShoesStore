@@ -756,5 +756,7 @@ a {
   outline: 1px solid #17a2b8;
   outline-offset: 4px;
 }
-
+.shoes-size.active {
+  border: 1px solid #17a2b8 !important;
+}
 

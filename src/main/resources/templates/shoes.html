@@ -37,11 +37,11 @@
                                     <a th:href="@{'/shoes/' + ${shoes.id}}"><img th:src="@{/images/{imagePath}(imagePath=${shoes.shoesColorList[0].imagePath})}" alt="Image placeholder" class="img-fluid img-shoes"></a>
                                 </figure>
                                 <div class="block-4-text p-4">
-                                    <h3 class="mb-1"><a href="shop-single.html" th:text="${shoes.name}"></a></h3>
+                                    <h3 class="mb-1 d-flex align-items-center justify-content-center w-100" style="height: 50px;"><a href="shop-single.html" th:text="${shoes.name}"></a></h3>
                                     <th:block th:each="shoesColor : ${shoes.shoesColorList}">
                                         <span class="color d-inline-block rounded-circle mr-1 border dot-shoes-color"
                                               th:style="'width: 20px; height: 20px; cursor: pointer; background-color: ' + ${shoesColor.color.colorCode}"
-                                              th:attr="data-shoes-image=${shoesColor.imagePath}"
+                                              th:attr="data-shoes-image=${shoesColor.imagePath}, data-shoes-color-id=${shoesColor.id}"
                                         ></span>
 
                                     </th:block>
@@ -119,6 +119,7 @@
                         spans += `<span class="color d-inline-block rounded-circle mr-1 border dot-shoes-color"
                                       style="width: 20px; height: 20px; cursor: pointer; background-color: ${shoesColor.colorDTO.colorCode}"
                                       data-shoes-image=${shoesColor.imagePath}
+                                      data-shoes-color-id=${shoesColor.id}
                                     ></span>`;
                     })
                     cardHtml += `<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
@@ -127,7 +128,7 @@
                                     <a href="/shoes/${shoes.id}"><img src="/images/${shoes.shoesColorDTOList[0].imagePath}" alt="Image placeholder" class="img-fluid img-shoes"></a>
                                 </figure>
                                 <div class="block-4-text p-4">
-                                    <h3 class="mb-1"><a href="shop-single.html">${shoes.name}</a></h3>
+                                    <h3 class="mb-1 d-flex justify-content-center align-items-center w-100" style="height: 50px;"><a href="shop-single.html">${shoes.name}</a></h3>
                                     ${spans}
                                     <p class="text-primary font-weight-bold">${shoes.price.toLocaleString("vi-VN").replaceAll('.', ',') + "đ"}</p>
                                 </div>

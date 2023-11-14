@@ -16,7 +16,7 @@
                 <h2 class="text-black" th:text="${shoes.name}"></h2>
                 <p th:text="${shoes.description}"></p>
 
-                <p><strong class="text-primary h4" th:text="${#numbers.formatDecimal(shoes.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></strong></p>
+                <p><strong class="text-primary h4 price" th:text="${#numbers.formatDecimal(shoes.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></strong></p>
 
                 <div class="mb-3 d-flex align-items-center">
                     <h5 class="mr-5 mb-0">Màu sắc:</h5>
@@ -25,7 +25,7 @@
                             <span class="color d-inline-block rounded-circle mr-3 border dot-shoes-color"
                                   th:classappend="${(iterStat.index == 0) ? 'active' : ''}"
                                   th:style="'width: 30px; height: 30px; cursor: pointer; background-color: ' + ${shoesColor.color.colorCode}"
-                                  th:attr="data-shoes-image=${shoesColor.imagePath}"
+                                  th:attr="data-shoes-image=${shoesColor.imagePath}, data-shoes-color-id=${shoesColor.id}"
                             ></span>
                         </th:block>
                     </div>
@@ -33,9 +33,9 @@
 
                 <div class="mb-3 d-flex align-items-center">
                     <h5 class="mr-5 mb-0">Size giày:</h5>
-                    <div class="d-flex justify-content-center align-items-center wrapper-color">
+                    <div class="d-flex justify-content-center align-items-center wrapper-size">
                         <th:block th:each="shoesVariation, iterStat : ${shoes.shoesColorList.get(0).shoesVariationList}">
-                            <span class="color d-inline-block rounded-2 mr-3 border text-center"
+                            <span class="color d-inline-block rounded-2 mr-3 border text-center shoes-size"
                                   style="width: 50px; height: 30px; cursor: pointer;"
                                   th:classappend="${(iterStat.index == 0) ? 'active' : ''}"
                                   th:attr="data-shoes-variation=${shoesVariation.id}"
@@ -49,14 +49,14 @@
                         <div class="input-group-prepend">
                             <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
                         </div>
-                        <input type="text" class="form-control text-center" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                        <input type="text" class="form-control text-center" value="1" placeholder="" id="quantity">
                         <div class="input-group-append">
                             <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
                         </div>
                     </div>
 
                 </div>
-                <p><a href="cart.html" class="buy-now btn btn-sm btn-primary">Add To Cart</a></p>
+                <p><button class="buy-now btn btn-sm btn-primary">Add To Cart</button></p>
 
             </div>
         </div>
@@ -68,8 +68,72 @@
                 $('.img-shoes').attr('src', `/images/${imgPath}`);
                 $('.dot-shoes-color').removeClass('active');
                 $(this).addClass('active');
+                const shoesColorId = $(this).data('shoes-color-id');
+                fetch(`/api/v1/shoes/variation/${shoesColorId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        let spans = ``;
+                        data.forEach((item, index) => {
+                            let appendClass = ``;
+                            if(index === 0) {
+                                appendClass = 'active';
+                            }
+                            spans += `<span class="color d-inline-block rounded-2 mr-3 border text-center shoes-size ${appendClass}"
+                                      style="width: 50px; height: 30px; cursor: pointer;"
+                                      data-shoes-variation=${item.id}
+                                    >${item.sizeValue}</span>`;
+                        })
+                        $('.wrapper-size').empty().append(spans);
+                    })
+                    .catch(err => {
+                        console.error('Lỗi')
+                    })
             })
+            $('.wrapper-size').on('click', '.shoes-size', function() {
+                $('.shoes-size').removeClass('active');
+                $(this).addClass('active');
+            })
+            $('.buy-now').click(function() {
+                const shoesVariationId = $('.shoes-size.active').data('shoes-variation');
+                const quantity = parseInt($('#quantity').val());
+                const price = parseInt($('.price').text().replaceAll(',', '').replaceAll('đ', ''));
+                fetch(`/api/v1/cart`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ shoesVariationId, quantity, price })
+                })
+                    .then(res => {
+                        if(res.status !== 201) {
+                            throw new Error();
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        Swal.fire({
+                            title: "Thông báo",
+                            text: "Đã thêm vào giỏ hàng thành công!",
+                            icon: "success",
+                            showCancelButton: true,
+                            confirmButtonText: "Tiếp tục mua hàng",
+                            cancelButtonText: 'Đến giỏ hàng'
+                        }).then((result) => {
+                            if (result.dismiss === Swal.DismissReason.cancel) {
+                                window.location.href = '/cart';
+                            }
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        Swal.fire({
+                            title: "Lỗi rồi!",
+                            text: "Thêm sản phẩm vào giỏ hàng thất bại",
+                            icon: "error"
+                        });
+                    })
 
+            })
         })
     </script>
 </th:block>

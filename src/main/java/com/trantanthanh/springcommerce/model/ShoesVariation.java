@@ -32,5 +32,8 @@ public class ShoesVariation {
     @OneToMany(mappedBy = "shoesVariation", cascade = CascadeType.ALL)
     private List<OrderLine> orderLineList;
 
+    @OneToMany(mappedBy = "shoesVariation", cascade = CascadeType.ALL)
+    private List<CartItem> cartItemList;
+
 
 }

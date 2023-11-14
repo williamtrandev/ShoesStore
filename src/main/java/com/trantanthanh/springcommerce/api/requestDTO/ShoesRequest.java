@@ -4,6 +4,7 @@ import com.trantanthanh.springcommerce.dto.ShoesColorDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ShoesRequest {
     @Data
     public static class ShoesColorJSON {
         private Long idColor;
-        private String imagePath;
+        private String image;
         private List<Variation> variationList;
     }
     private Long id;

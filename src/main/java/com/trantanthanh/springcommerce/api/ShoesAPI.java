@@ -4,7 +4,10 @@ package com.trantanthanh.springcommerce.api;
 import com.trantanthanh.springcommerce.api.requestDTO.FilterRequest;
 import com.trantanthanh.springcommerce.api.requestDTO.ShoesRequest;
 import com.trantanthanh.springcommerce.dto.ShoesDTO;
+import com.trantanthanh.springcommerce.dto.ShoesVariationDTO;
 import com.trantanthanh.springcommerce.model.Shoes;
+import com.trantanthanh.springcommerce.model.ShoesVariation;
+import com.trantanthanh.springcommerce.repository.ShoesVariationRepository;
 import com.trantanthanh.springcommerce.service.impl.ShoesService;
 import com.trantanthanh.springcommerce.utils.Mapping;
 import lombok.AllArgsConstructor;
@@ -14,11 +17,12 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/shoes")
 public class ShoesAPI {
     private final ShoesService shoesService;
+    private final ShoesVariationRepository shoesVariationRepository;
 
-    @GetMapping("/shoes")
+    @GetMapping({"", "/"})
     public List<ShoesDTO> getAll() {
         return Mapping.convertToListShoesDTO(shoesService.getAll());
     }
@@ -35,8 +39,14 @@ public class ShoesAPI {
         return Mapping.convertToListShoesDTO(filterShoes);
     }
 
-    @PostMapping("/shoes")
+    @PostMapping({"", "/"})
     public ShoesDTO add(@RequestBody ShoesRequest request) {
         return Mapping.convertToShoesDTO(shoesService.insertOne(request));
     }
+
+    @GetMapping("/variation/{idShoesColor}")
+    public List<ShoesVariationDTO> getVariation(@PathVariable(name = "idShoesColor") Long id) {
+        return Mapping.convertToListShoesVariationDTO(shoesVariationRepository.findAllWithSize(id));
+    }
+
 }

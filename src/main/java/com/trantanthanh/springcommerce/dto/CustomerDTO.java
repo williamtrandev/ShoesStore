@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShoesVariationDTO {
+public class CustomerDTO {
     private Long id;
-    private Long shoesColorId;
-    private Long sizeId;
-    private int sizeValue;
-    private int stock;
+    private String phone;
+    private String name;
+    private String address;
+    private String password;
 }

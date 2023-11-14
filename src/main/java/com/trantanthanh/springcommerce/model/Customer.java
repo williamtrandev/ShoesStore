@@ -29,4 +29,7 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Order> orderList;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<CartItem> cartItemList;
+
 }
