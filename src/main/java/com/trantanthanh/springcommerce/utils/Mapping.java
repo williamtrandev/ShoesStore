@@ -1,10 +1,7 @@
 package com.trantanthanh.springcommerce.utils;
 
 import com.trantanthanh.springcommerce.dto.*;
-import com.trantanthanh.springcommerce.model.CartItem;
-import com.trantanthanh.springcommerce.model.Shoes;
-import com.trantanthanh.springcommerce.model.ShoesColor;
-import com.trantanthanh.springcommerce.model.ShoesVariation;
+import com.trantanthanh.springcommerce.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,5 +87,58 @@ public class Mapping {
         cartItemDTO.setQuantity(cartItem.getQuantity());
         cartItemDTO.setPrice(cartItem.getPrice());
         return cartItemDTO;
+    }
+
+    public static List<CartItemDTO> convertToListCartItemDTO(List<CartItem> cartItemList) {
+        List<CartItemDTO> cartItemDTOList = new ArrayList<>();
+        for(CartItem cartItem : cartItemList) {
+            cartItemDTOList.add(convertToCartItemDTO(cartItem));
+        }
+        return cartItemDTOList;
+    }
+
+    public static CustomerDTO convertToCustomerDTO(Customer customer) {
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setPhone(customer.getPhone());
+        customerDTO.setId(customer.getId());
+        customerDTO.setName(customer.getName());
+        customerDTO.setAddress(customer.getAddress());
+        return customerDTO;
+    }
+
+    public static OrderDTO convertToOrderDTO(Order order) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(order.getId());
+        orderDTO.setDateOrder(order.getDateOrder());
+        orderDTO.setStatus(order.getStatus());
+        orderDTO.setCustomerId(order.getCustomer().getId());
+        orderDTO.setTotal(order.getTotal());
+        orderDTO.setOrderLineDTOList(Mapping.convertToListOrderLineDTO(order.getOrderLineList()));
+        return orderDTO;
+    }
+    public static List<OrderDTO> convertToListOrderDTO(List<Order> orderList) {
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        for(Order order : orderList) {
+            orderDTOList.add(convertToOrderDTO(order));
+        }
+        return orderDTOList;
+    }
+
+    public static OrderLineDTO convertToOrderLineDTO(OrderLine orderLine) {
+        OrderLineDTO orderLineDTO = new OrderLineDTO();
+        orderLineDTO.setId(orderLine.getId());
+        orderLineDTO.setPrice(orderLine.getPrice());
+        orderLineDTO.setQuantity(orderLine.getQuantity());
+        orderLineDTO.setShoesOrderId(orderLine.getOrder().getId());
+        orderLineDTO.setShoesVariationId(orderLine.getShoesVariation().getId());
+        orderLineDTO.setShoesVariationDTO(Mapping.convertToShoesVariationDTO(orderLine.getShoesVariation()));
+        return orderLineDTO;
+    }
+    public static List<OrderLineDTO> convertToListOrderLineDTO(List<OrderLine> orderLineList) {
+        List<OrderLineDTO> orderLineDTOList = new ArrayList<>();
+        for(OrderLine orderLine : orderLineList) {
+            orderLineDTOList.add(convertToOrderLineDTO(orderLine));
+        }
+        return orderLineDTOList;
     }
 }

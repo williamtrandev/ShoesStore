@@ -2,7 +2,11 @@ package com.trantanthanh.springcommerce.controller;
 
 import com.trantanthanh.springcommerce.model.*;
 import com.trantanthanh.springcommerce.service.impl.*;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -22,7 +27,11 @@ public class ShoesController {
     private final ColorService colorService;
     private final ShoesService shoesService;
     @GetMapping({"", "/"})
-    public String index(Model model) {
+    public String index(Model model, HttpSession session) {
+        Object customerId = session.getAttribute("customerId");
+        if(customerId == null) {
+            return "redirect:/customer/login";
+        }
         model.addAttribute("title", "Sản phẩm");
 
         // List of brands
@@ -46,7 +55,11 @@ public class ShoesController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable("id") Long id, Model model) {
+    public String detail(@PathVariable("id") Long id, Model model, HttpSession session) {
+        Object customerId = session.getAttribute("customerId");
+        if(customerId == null) {
+            return "redirect:/customer/login";
+        }
         Shoes shoes = shoesService.getOne(id);
         model.addAttribute("shoes", shoes);
         model.addAttribute("title", shoes.getName());

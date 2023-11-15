@@ -98,10 +98,11 @@
                 const shoesVariationId = $('.shoes-size.active').data('shoes-variation');
                 const quantity = parseInt($('#quantity').val());
                 const price = parseInt($('.price').text().replaceAll(',', '').replaceAll('đ', ''));
+                const customerId = sessionStorage.getItem("customerId");
                 fetch(`/api/v1/cart`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ shoesVariationId, quantity, price })
+                    body: JSON.stringify({ customerId, shoesVariationId, quantity, price })
                 })
                     .then(res => {
                         if(res.status !== 201) {

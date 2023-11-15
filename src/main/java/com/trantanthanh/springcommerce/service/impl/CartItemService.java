@@ -29,4 +29,18 @@ public class CartItemService implements ICartItemService {
     public CartItem getOneByCustomerIdAndShoesVariationId(Long customerId, Long shoesVariationId) {
         return cartItemRepository.findByCustomerIdAndShoesVariationId(customerId, shoesVariationId);
     }
+
+    @Override
+    public CartItem getOne(Long id) {
+        return cartItemRepository.getReferenceById(id);
+    }
+
+    @Override
+    public boolean deleteOne(Long id) {
+        if(cartItemRepository.existsById(id)) {
+            cartItemRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

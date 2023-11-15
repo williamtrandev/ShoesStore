@@ -19,6 +19,10 @@ public class CartController {
     private final CartItemService cartItemService;
     @GetMapping({"", "/"})
     public String index(Model model, HttpSession session) {
+        Object customerId = session.getAttribute("customerId");
+        if(customerId == null) {
+            return "redirect:/customer/login";
+        }
         model.addAttribute("title", "Giỏ hàng");
         Object id = session.getAttribute("customerId");
         List<CartItem> cartItemList = cartItemService.getAllByCustomerId((Long) id);

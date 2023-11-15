@@ -3,6 +3,7 @@ package com.trantanthanh.springcommerce.api;
 import com.trantanthanh.springcommerce.dto.CustomerDTO;
 import com.trantanthanh.springcommerce.model.Customer;
 import com.trantanthanh.springcommerce.service.impl.CustomerService;
+import com.trantanthanh.springcommerce.utils.Mapping;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class CustomerAPI {
                     .matches(customerDTO.getPassword(),
                     customer.getPassword());
             if(checkPass) {
-                return ResponseEntity.ok(customer);
+                CustomerDTO returnCustomer = Mapping.convertToCustomerDTO(customer);
+                return ResponseEntity.ok(returnCustomer);
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid phone number or password");

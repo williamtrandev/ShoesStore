@@ -9,6 +9,7 @@ import com.trantanthanh.springcommerce.service.impl.CartItemService;
 import com.trantanthanh.springcommerce.service.impl.CustomerService;
 import com.trantanthanh.springcommerce.service.impl.ShoesService;
 import com.trantanthanh.springcommerce.service.impl.ShoesVariationService;
+import com.trantanthanh.springcommerce.utils.Mapping;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,13 @@ public class CartAPI {
     private final ShoesVariationService shoesVariationService;
 
     @GetMapping("/{id}")
-    public List<CartItem> getCart(@PathVariable("id") Long id) {
-        return cartItemService.getAllByCustomerId(id);
+    public List<CartItemDTO> getCart(@PathVariable("id") Long id) {
+        return Mapping.convertToListCartItemDTO(cartItemService.getAllByCustomerId(id));
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<?> addToCart(@RequestBody CartItemDTO cartItemDTO, HttpSession session) {
-        Long customerId = (Long) session.getAttribute("customerId");
+    public ResponseEntity<?> addToCart(@RequestBody CartItemDTO cartItemDTO) {
+        Long customerId = cartItemDTO.getCustomerId();
         Long shoesVariationId = cartItemDTO.getShoesVariationId();
         CartItem existCartItem = cartItemService.getOneByCustomerIdAndShoesVariationId(customerId, shoesVariationId);
         int quantity = cartItemDTO.getQuantity();
@@ -51,5 +52,22 @@ public class CartAPI {
             existCartItem.setQuantity(existCartItem.getQuantity() + quantity);
             return ResponseEntity.status(HttpStatus.CREATED).body(cartItemService.save(existCartItem));
         }
+    }
+
+    @PutMapping("/cartItem/{id}")
+    public ResponseEntity<?> updateCart(@PathVariable(name = "id") Long id, @RequestBody CartItemDTO cartItemDTO) {
+        CartItem cartItem = cartItemService.getOne(id);
+        cartItem.setQuantity(cartItemDTO.getQuantity());
+        CartItemDTO returnCartItem = cartItemService.save(cartItem);
+        return ResponseEntity.ok(returnCartItem);
+    }
+
+    @DeleteMapping("/cartItem/{id}")
+    public ResponseEntity<?> deleteCartItem(@PathVariable(name = "id") Long id) {
+        boolean checkDelete = cartItemService.deleteOne(id);
+        if(!checkDelete) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CartItem not found with ID: " + id);
+        }
+        return ResponseEntity.noContent().build();
     }
 }
