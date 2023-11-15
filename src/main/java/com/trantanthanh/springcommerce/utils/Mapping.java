@@ -132,6 +132,8 @@ public class Mapping {
         orderLineDTO.setShoesOrderId(orderLine.getOrder().getId());
         orderLineDTO.setShoesVariationId(orderLine.getShoesVariation().getId());
         orderLineDTO.setShoesVariationDTO(Mapping.convertToShoesVariationDTO(orderLine.getShoesVariation()));
+        orderLineDTO.setImagePath(orderLine.getShoesVariation().getShoesColor().getImagePath());
+        orderLineDTO.setShoesName(orderLine.getShoesVariation().getShoesColor().getShoes().getName());
         return orderLineDTO;
     }
     public static List<OrderLineDTO> convertToListOrderLineDTO(List<OrderLine> orderLineList) {

@@ -14,4 +14,6 @@ public class OrderLineDTO {
     private int quantity;
     private Long shoesOrderId;
     private ShoesVariationDTO shoesVariationDTO;
+    private String imagePath;
+    private String shoesName;
 }

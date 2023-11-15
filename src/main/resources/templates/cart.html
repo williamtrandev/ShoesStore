@@ -24,7 +24,7 @@
                         </thead>
                         <tbody>
                         <th:block th:each="cartItem : ${cartItemList}">
-                            <tr>
+                            <tr th:attr="data-id=${cartItem.id}">
                                 <td class="product-thumbnail">
                                     <img th:src="'/images/' + ${cartItem.shoesVariation.shoesColor.imagePath}" alt="Image" class="img-fluid">
                                 </td>
@@ -45,7 +45,7 @@
 
                                 </td>
                                 <td th:text="${#numbers.formatDecimal(cartItem.price * cartItem.quantity, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
-                                <td><a href="#" class="btn btn-primary btn-sm">X</a></td>
+                                <td th:attr="data-item-id=${cartItem.id}"><button type="button" class="btn btn-primary btn-sm btn-remove">X</button></td>
                             </tr>
                         </th:block>
 
@@ -59,7 +59,7 @@
             <div class="col-md-6">
                 <div class="row mb-5">
                     <div class="col-md-6 mb-3 mb-md-0">
-                        <button class="btn btn-primary btn-sm btn-block">Cập nhật giỏ hàng</button>
+                        <button class="btn btn-primary btn-sm btn-block btn-update">Cập nhật giỏ hàng</button>
                     </div>
                     <div class="col-md-6">
                         <button class="btn btn-outline-primary btn-sm btn-block" onclick="window.location.href='/shoes'">Tiếp tục mua hàng</button>
@@ -112,7 +112,7 @@
                 const tds = $(this).closest('tr').find('td');
                 const price = parseInt($(tds).eq(2).text().replaceAll(',', '').replaceAll('đ', ''));
                 const newPrice = currentNum * price;
-                const newPriceText = newPrice.toLocaleString('vi-VN').replaceAll('.', ',') + 'đ';
+                const newPriceText = newPrice.toLocaleString('vi-VN').replaceAll('.', ',') + ' đ';
                 $(tds).eq(4).text(newPriceText);
                 updateTotal();
             })
@@ -124,9 +124,104 @@
                 const tds = $(this).closest('tr').find('td');
                 const price = parseInt($(tds).eq(2).text().replaceAll(',', '').replaceAll('đ', ''));
                 const newPrice = currentNum * price;
-                const newPriceText = newPrice.toLocaleString('vi-VN').replaceAll('.', ',') + 'đ';
+                const newPriceText = newPrice.toLocaleString('vi-VN').replaceAll('.', ',') + ' đ';
                 $(tds).eq(4).text(newPriceText);
                 updateTotal();
+            })
+
+            $('.btn-remove').click(function() {
+                const cartItemId = $(this).parent().data('item-id');
+                const trRemove = $(this).closest('tr');
+                Swal.fire({
+                    title: "Cảnh báo",
+                    text: "Bạn có chắc xóa khỏi giỏ hàng không!",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonText: "Có",
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if(result.isConfirmed) {
+                        fetch(`/api/v1/cart/cartItem/${cartItemId}`, {
+                            method: 'DELETE'
+                        })
+                            .then(res => {
+                                if(res.status === 204) {
+                                    Swal.fire({
+                                        title: "Thành công",
+                                        text: "Đã xóa khỏi giỏ hàng",
+                                        icon: "success"
+                                    });
+                                    trRemove.remove();
+                                } else {
+                                    throw new Error();
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                Swal.fire({
+                                    title: "Không thành công",
+                                    text: "Đã xảy ra lỗi",
+                                    icon: "error"
+                                });
+                            })
+                    }
+                });
+
+            })
+
+            $('.btn-update').click(function() {
+                $('tbody tr').each(function() {
+                    const cartId = $(this).data('id');
+                    const quantity = $(this).find('td').eq(3).find('input').val();
+                    fetch(`/api/v1/cart/cartItem/${cartId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ quantity })
+                    })
+                })
+                Swal.fire({
+                    title: "Thành công",
+                    text: "Đã cập nhật giỏ hàng",
+                    icon: "success"
+                });
+            })
+
+            $('.btn-order').click(function() {
+                const customerId = sessionStorage.getItem("customerId");
+                const numCartItem = $('tbody tr').length;
+                if(numCartItem === 0) {
+                    Swal.fire({
+                        title: "Thông tin",
+                        text: "Vui lòng chọn mặt hàng sau đó thanh toán",
+                        icon: "question"
+                    });
+                    return;
+                }
+                fetch(`/api/v1/order/${customerId}`, {
+                    method: 'POST'
+                })
+                    .then(res => {
+                        if(!res.ok) {
+                            throw new Error();
+                        } else {
+                            Swal.fire({
+                                title: "Thành công",
+                                text: "Đặt hàng thành công",
+                                icon: "success"
+                            });
+                            setTimeout(() => {
+                                window.location.href = '/shoes';
+                            }, 1000);
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        Swal.fire({
+                            title: "Lỗi",
+                            text: "Đặt hàng không thành công",
+                            icon: "error"
+                        });
+                    })
             })
         })
     </script>

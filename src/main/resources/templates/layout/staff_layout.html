@@ -33,15 +33,12 @@
                 <div class="row align-items-center">
 
                     <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
-                        <form action="/shoes/search" class="site-block-top-search">
-                            <span class="icon icon-search2"></span>
-                            <input type="text" class="form-control border-0" placeholder="Tìm kiếm" name="keyword">
-                        </form>
+
                     </div>
 
                     <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
                         <div class="site-logo">
-                            <a href="/shoes" class="js-logo-clone">William Shoes</a>
+                            <a href="/" class="js-logo-clone">William Shoes</a>
                         </div>
                     </div>
 
@@ -49,29 +46,25 @@
                         <div class="site-top-icons">
                             <ul>
                                 <li><a href="#"><span class="icon icon-person"></span></a></li>
-                                <li><a href="#"><span class="icon icon-heart-o"></span></a></li>
-                                <li>
-                                    <a href="/cart" class="site-cart">
-                                        <span class="icon icon-shopping_cart"></span>
-                                        <span class="count">2</span>
-                                    </a>
-                                </li>
+
                                 <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <nav class="site-navigation text-right text-md-center" role="navigation">
             <div class="container">
                 <ul class="site-menu js-clone-nav d-none d-md-block">
-                    <li th:classappend="${activeShoes != null} ? 'active'">
-                        <a href="/shoes">Giày</a>
-                    </li>
                     <li th:classappend="${activeOrder != null} ? 'active'">
-                        <a href="/customer/orders">Đơn đặt hàng</a>
+                        <a href="/admin">Đơn đặt hàng</a>
+                    </li>
+                    <li th:classappend="${activeShoes != null} ? 'active'">
+                        <a href="/admin/shoes">Giày</a>
+                    </li>
+                    <li th:classappend="${activeCustomer != null} ? 'active'">
+                        <a href="/admin/customers">Khách hàng</a>
                     </li>
                 </ul>
             </div>

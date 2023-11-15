@@ -51,6 +51,8 @@ public class ShoesController {
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("colorList", colorList);
         model.addAttribute("shoesList", shoesList);
+
+        model.addAttribute("activeShoes", true);
         return "shoes";
     }
 
@@ -68,6 +70,7 @@ public class ShoesController {
 
     @GetMapping("/search")
     public String search(@RequestParam(name = "keyword") String name, Model model) {
+
         List<Shoes> shoesList = shoesService.searchByName(name);
         model.addAttribute("shoesList", shoesList);
         model.addAttribute("title", "Tìm kiếm");

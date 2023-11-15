@@ -1,6 +1,7 @@
 package com.trantanthanh.springcommerce.api;
 
 import com.trantanthanh.springcommerce.dto.OrderDTO;
+import com.trantanthanh.springcommerce.dto.OrderLineDTO;
 import com.trantanthanh.springcommerce.service.impl.OrderService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -28,4 +29,15 @@ public class OrderAPI {
         }
         return ResponseEntity.ok("Save order successfully");
     }
+
+    @GetMapping("/{orderId}")
+    public List<OrderLineDTO> detail(@PathVariable(name = "orderId") Long id) {
+        return orderService.getOrderLineByOrderId(id);
+    }
+
+    @PutMapping("/{orderId}")
+    public OrderDTO updateStatus(@PathVariable(name = "orderId") Long id) {
+        return orderService.updateStatus(id);
+    }
+
 }

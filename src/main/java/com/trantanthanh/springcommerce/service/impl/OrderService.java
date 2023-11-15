@@ -1,6 +1,7 @@
 package com.trantanthanh.springcommerce.service.impl;
 
 import com.trantanthanh.springcommerce.dto.OrderDTO;
+import com.trantanthanh.springcommerce.dto.OrderLineDTO;
 import com.trantanthanh.springcommerce.model.CartItem;
 import com.trantanthanh.springcommerce.model.Customer;
 import com.trantanthanh.springcommerce.model.Order;
@@ -42,6 +43,7 @@ public class OrderService implements IOrderService {
         Date currentDate = new Date();
         order.setDateOrder(new java.sql.Date(currentDate.getTime()));
         order.setCustomer(customer);
+        order.setStatus("Đang xử lý");
         orderRepository.save(order);
         List<OrderLine> orderLineList = new ArrayList<>();
         double total = 0;
@@ -63,4 +65,30 @@ public class OrderService implements IOrderService {
         orderRepository.save(order);
         return true;
     }
+
+    @Override
+    public List<OrderDTO> getAllByCustomerId(Long id) {
+        return Mapping.convertToListOrderDTO(orderRepository.getAllByCustomerIdOrderByIdDesc(id));
+    }
+
+    @Override
+    public List<Order> getAllOrderByCustomerId(Long id) {
+        return orderRepository.getAllByCustomerIdOrderByIdDesc(id);
+    }
+
+    @Override
+    public List<OrderLineDTO> getOrderLineByOrderId(Long id) {
+        return Mapping.convertToListOrderLineDTO(orderLineRepository.getAllByOrderId(id));
+    }
+
+    @Override
+    public OrderDTO updateStatus(Long id) {
+        Order order = orderRepository.getReferenceById(id);
+        String currStatus = order.getStatus();
+        String newStatus = currStatus.equals("Đang xử lý") ? "Hoàn thành" : "Đang xử lý";
+        order.setStatus(newStatus);
+        return Mapping.convertToOrderDTO(orderRepository.save(order));
+    }
+
+
 }

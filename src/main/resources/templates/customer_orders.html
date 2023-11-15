@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer_layout :: page(title=${title})}">
+<head>
+
+</head>
+<body>
+
+<th:block th:fragment="content">
+    <div class="container">
+        <div class="row mb-5">
+            <form class="col-md-12">
+                <div class="site-blocks-table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn hàng</th>
+                                <th>Ngày đặt</th>
+                                <th>Tổng</th>
+                                <th>Trạng thái</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <th:block th:each="orderItem : ${orderList}">
+                               <tr th:attr="data-id=${orderItem.id}">
+                                   <td>
+                                       <h2 class="h5 text-black" th:text="${orderItem.id}"></h2>
+                                   </td>
+                                   <td>
+                                       <h2 class="h5 text-black" th:text="${orderItem.dateOrder}"></h2>
+                                   </td>
+                                   <td>
+                                       <h2 class="h5 text-primary" th:text="${#numbers.formatDecimal(orderItem.total, 0, 'COMMA', 0, 'POINT')} + ' đ'"></h2>
+                                   </td>
+                                   <td>
+                                       <h2 class="h5 text-black" th:text="${orderItem.status}"></h2>
+                                   </td>
+                                   <td>
+                                       <button th:attr="data-id=${orderItem.id}" type="button" class="btn btn-outline-primary btn-detail">Chi tiết</button>
+                                   </td>
+                               </tr>
+                            </th:block>
+
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('.btn-detail').click(function() {
+                const id = $(this).data('id');
+                fetch(`/api/v1/order/${id}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        let trs = ``;
+                        data.forEach(order => {
+                            trs += `
+                                <tr data-id=${order.id}>
+                                    <td class="product-thumbnail">
+                                        <img src="/images/${order.imagePath}" alt="Image" style="width: 60px; height: 60px">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <h2 class="h5 text-black mb-0">${order.shoesName}</h2>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <h2 class="h5 text-primary mb-0">${order.price.toLocaleString('vi-VN').replaceAll('.', ',') + " đ"}</h2>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <h2 class="h5 text-black mb-0">${order.quantity}</h2>
+                                    </td>
+                                </tr>`
+
+
+                        })
+                        let htmls = `<div>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="product-thumbnail">Ảnh</th>
+                                    <th class="product-name">Tên sản phẩm</th>
+                                    <th class="product-price">Giá</th>
+                                    <th class="product-quantity">Số lượng</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    ${trs}
+                                </tbody>
+                            </table>
+                        </div>`;
+                        Swal.fire({
+                            title: "Chi tiết",
+                            width: 'auto',
+                            customClass: 'sweet-width',
+                            html: htmls,
+                            icon: "info",
+
+                        });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        Swal.fire({
+                            title: "Lỗi",
+                            text: "Đã xảy ra lỗi",
+                            icon: "error"
+                        });
+                    })
+            })
+        })
+    </script>
+</th:block>
+
+
+</body>
+
+</html>

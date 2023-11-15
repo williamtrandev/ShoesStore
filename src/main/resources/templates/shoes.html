@@ -159,7 +159,7 @@
                 $('.check-color:checked').each(function() {
                     colorIds.push($(this).data('id'));
                 })
-                fetch(`/api/v1/filter`, {
+                fetch(`/api/v1/shoes/filter`, {
                     method: 'POST',
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ minPrice, maxPrice, brandIds, colorIds })
