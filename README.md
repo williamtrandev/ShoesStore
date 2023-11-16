@@ -43,5 +43,267 @@ Trong Spring Boot, Annotation là cách để cung cấp metadata cho mã nguồ
 @PostMapping, @GetMapping, @PutMapping, @DeleteMapping:
   - Tương ứng với các phương thức HTTP POST, GET, PUT, DELETE.
 
+# Thiết kế cơ sở dữ liệu:
+
+## ERD:
+
+## ERD mức vật lý:
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/20ffde5c-d068-4187-a86f-d017295f3cd3)
+
+
+
 # Cấu trúc thư mục trong project:
+
+## Cấu trúc tổng quát:
+<img src="https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/95e2352e-56e3-4e36-81da-8537f4f73e34" min-width="400px" max-width="400px" width="400px" align="right">
+
+
+<p align="left"> 
+  Thư mục api: chứa các api tương tác với giỏ hàng, đơn đặt hàng, giày...
+  
+  Thư mục config: chứa các cấu hình bảo mật (Security) cho project
+  
+  Thư mục controller: chứa các controller điều hướng trang Web
+  
+  Thư mục dto: Chứa các class dùng để chuyển đổi dữ liệu từ Model để tránh tình trạng đệ quy vô tận (Infinite Recursion) khi trả dữ liệu về bằng JSON
+  
+  Thư mục model: Chứa các class để ánh xạ xuống các bảng trong cơ sở dữ liệu
+  
+  Thư mục repository: Chứa các interface tương tác với cơ sở dữ liệu
+  
+  Thư mục service: Chứa các class thực hiện nhiệm vụ xử lý logic
+  
+  Thư mục utils: Chứa các class hỗ trợ cho việc xử lý trong project
+
+  Thư mục resource/static: Chứa các folder css, js, images
+
+  Thư mục resource/templates: Chứa folder layout và các file view 
+</p>
+
+## Cấu trúc chi tiết:
+
+Bên trong thư mục api: ngoài chứa các class api còn chứa folder requestDTO - đây là folder dùng để định nghĩa các request để khi thực hiện các request bằng fetch/ajax ở phía client, server sẽ tự động mapping request body đó sang cho các class đã định nghĩa trong requestDTO
+
+Bên trong thư mục service: chứa các interface định nghĩa các phương thức cần thiết cho mỗi service, và một folder chứa các implementation tương ứng với mỗi interface.
+
+Bên trong thư mục templates: Có một folder layout - là folder chứa các file layout chính, và các file view khác
+
+# Cấu hình để chạy project:
+
+1. Khởi tạo database bằng lệnh:
+```
+CREATE DATABASE shoes_shopping
+```
+2. Sau đó chạy project
+3. Để tạo một tài khoản admin theo ý thầy có thể vào file AdminInitializer trong folder config để định nghĩa lại username và password (ở đây em đã cấu hình sẵn khi chạy ứng dụng thì tên tài khoản và mật khẩu admin mặc định sẽ là admin)
+<img src="https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/98a9fd1c-1508-48d4-9a5e-042d158dad02" width="800px">
+
+# API trong ứng dụng:
+
+## API Customer:
+
+### Register - Đăng ký:
+Method: POST
+
+Endpoint:
+```
+localhost:8080/api/v1/customer/register
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/4c804e1f-c5ff-4b40-a4e0-fe64b6b368ef)
+
+### Login - Đăng nhập:
+Method: POST
+
+Endpoint:
+```
+localhost:8080/api/v1/customer/login
+```
+
+Login thất bại:
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/cce9d4b1-96a4-4568-ba26-5a33e544e962)
+
+Login thành công:
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/3fec822e-68b5-4b33-aaea-079c29a851de)
+
+## API Shoes:
+
+### Search - Tìm kiếm:
+
+Đây là API tìm kiếm sản phẩm theo tên gần giống với tên sản phẩm
+
+Method: GET
+
+Endpoint:
+```
+localhost:8080/api/v1/shoes/search?keyword=abc
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/abc3f1d2-133d-4aaf-bf7d-a4f592082fc3)
+
+### Get all shoes - Lấy danh sách giày hiện có:
+
+API này trả về toàn bộ giày đang có trên hệ thống
+
+Method: GET
+
+Endpoint:
+```
+localhost:8080/api/v1/shoes
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/b3c5820b-c767-4310-acd9-6da16285044e)
+
+### Get Shoes Variation - Lấy danh sách các biến thể của giày:
+
+API này trả về danh sách các biến thể của giày (Một giày có nhiều màu, nhiều size)
+
+Method: GET
+
+Endpoint:
+```
+localhost:8080/api/v1/shoes/variation/2
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/84b19190-8ac5-452a-893b-d605e0dace5b)
+
+### Filter - Lọc:
+
+API này cho phép lọc sản phẩm theo nhiều trường khác nhau như giá tiền thấp nhất, cao nhất, theo danh sách các thương hiệu, theo màu sắc
+
+Method: POST
+
+Endpoint:
+```
+localhost:8080/api/v1/shoes/filter
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/e500b88b-5d77-4fba-ac0f-dcb3b21c826a)
+
+
+### Add new shoes - Thêm một sản phẩm mới:
+
+API này thêm một sản phẩm mới với tên, giá, mô tả, thương hiệu (id), loại giày (id) và danh sách các màu giày
+
+Method: POST
+
+Endpoint:
+```
+localhost:8080/api/v1/shoes
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/d0ab4dc3-3c85-48de-b89b-436da34bd9a2)
+
+## API Cart:
+
+### Get All Cart Item - Lấy danh sách các sản phẩm trong giỏ hàng:
+
+API này cho phép lấy danh sách các sản phẩm đã được thêm vào giỏ hàng của khách hàng theo id khách hàng
+
+Method: GET
+
+Endpoint:
+```
+localhost:8080/api/v1/cart/1
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/76d01683-bdb9-4a8d-a616-fba702a0aff1)
+
+### Add Cart Item - Thêm sản phẩm vào giỏ hàng:
+
+API này cho phép thêm một sản phẩm vào giỏ hàng 
+
+Method: POST
+
+Endpoint:
+```
+localhost:8080/api/v1/cart
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/59147db9-dd6c-4b9c-be3b-743c3102d753)
+
+### Update Cart Item - Cập nhật giỏ hàng:
+
+API này cho phép người dùng cập nhật lại số lượng sản phẩm mà họ muốn đặt
+
+Method: PUT
+
+Endpoint:
+```
+localhost:8080/api/v1/cart/cartItem/3
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/0237765b-c28d-4b28-9448-254f73f7a74b)
+
+### Delete Cart Item - Xóa đơn hàng ra khỏi giỏ:
+
+API này cho phép người dùng xóa món hàng ra khỏi giỏ khi có nhu cầu
+
+Method: DELETE
+
+Endpoint: 
+```
+localhost:8080/api/v1/cart/cartItem/4
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/f03dd861-c2b7-4153-880b-c3ddb93b77b5)
+
+## API Order:
+
+### Get All Order - Lấy danh sách các đơn đặt hàng của khách hàng:
+
+API này trả về danh sách các đơn đặt hàng trên hệ thống
+
+Method: GET
+
+Endpoint:
+```
+localhost:8080/api/v1/order
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/7ac9b62b-811c-48b6-a2e2-0dbae6ef5fad)
+
+### Get Detail Order - Chi tiết đơn đặt hàng:
+
+API này cho phép xem chi tiết đơn hàng gồm những sản phẩm gì
+
+Method: GET
+
+Endpoint:
+```
+localhost:8080/api/v1/order/1
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/e26942e4-bb18-4a1d-aeed-294850444fc5)
+
+### Save Order / Checkout - Xác nhận đặt hàng:
+
+API này cho phép người dùng sau khi đã thêm các sản phẩm vào giỏ hàng thì có thể xác nhận đặt hàng
+
+Method: POST
+
+Endpoint:
+```
+localhost:8080/api/v1/order/2
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/08a8d7b1-de65-47c4-9f3a-59b944294328)
+
+
+### Update Status - Cập nhật trạng thái đơn hàng:
+
+API cho phép admin cập nhật lại trạng thái của đơn hàng
+
+Method: PUT
+
+Endpoint:
+```
+localhost:8080/api/v1/order/1
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/5b0c7b91-c9a3-4b65-b73f-39d38db71629)
+
+
 
