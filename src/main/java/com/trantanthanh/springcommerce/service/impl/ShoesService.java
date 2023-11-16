@@ -102,12 +102,11 @@ public class ShoesService implements IShoesService {
             // List shoesVariation
             List<ShoesVariation> shoesVariationList = new ArrayList<>();
             // Insert cho từng variation
-            for(ShoesRequest.Variation variation : scJSON.getVariationList()) {
-                Size size = sizeRepository.getReferenceById(variation.getSizeId());
+            for(Long sizeId : scJSON.getSizeList()) {
+                Size size = sizeRepository.getReferenceById(sizeId);
                 ShoesVariation shoesVariation = new ShoesVariation();
                 shoesVariation.setShoesColor(shoesColor);
                 shoesVariation.setSize(size);
-                shoesVariation.setStock(variation.getStock());
                 shoesVariationList.add(shoesVariation);
             }
             shoesVariationRepository.saveAll(shoesVariationList);

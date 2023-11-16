@@ -90,5 +90,10 @@ public class OrderService implements IOrderService {
         return Mapping.convertToOrderDTO(orderRepository.save(order));
     }
 
+    @Override
+    public List<Order> getOrderWithStatus(String status) {
+        return orderRepository.findAllByStatus(status);
+    }
+
 
 }

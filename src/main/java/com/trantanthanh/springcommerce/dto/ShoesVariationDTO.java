@@ -12,5 +12,4 @@ public class ShoesVariationDTO {
     private Long shoesColorId;
     private Long sizeId;
     private int sizeValue;
-    private int stock;
 }

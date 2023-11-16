@@ -13,15 +13,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ShoesRequest {
     @Data
-    public static class Variation {
-        private Long sizeId;
-        private int stock;
-    }
-    @Data
     public static class ShoesColorJSON {
         private Long idColor;
         private String image;
-        private List<Variation> variationList;
+        private List<Long> sizeList;
     }
     private Long id;
     private Long categoryId;

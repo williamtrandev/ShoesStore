@@ -52,7 +52,6 @@ public class Mapping {
         shoesVariationDTO.setShoesColorId(shoesVariation.getShoesColor().getId());
         shoesVariationDTO.setSizeId(shoesVariation.getSize().getId());
         shoesVariationDTO.setSizeValue(shoesVariation.getSize().getSizeValue());
-        shoesVariationDTO.setStock(shoesVariation.getStock());
         return shoesVariationDTO;
     }
 
@@ -78,7 +77,6 @@ public class Mapping {
         // ShoesVariationDTO
         ShoesVariationDTO shoesVariationDTO = new ShoesVariationDTO();
         shoesVariationDTO.setId(cartItem.getShoesVariation().getId());
-        shoesVariationDTO.setStock(cartItem.getShoesVariation().getStock());
         shoesVariationDTO.setSizeId(cartItem.getShoesVariation().getSize().getId());
         shoesVariationDTO.setSizeValue(cartItem.getShoesVariation().getSize().getSizeValue());
         shoesVariationDTO.setShoesColorId(cartItem.getShoesVariation().getShoesColor().getId());

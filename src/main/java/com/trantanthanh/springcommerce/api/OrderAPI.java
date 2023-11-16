@@ -36,8 +36,12 @@ public class OrderAPI {
     }
 
     @PutMapping("/{orderId}")
-    public OrderDTO updateStatus(@PathVariable(name = "orderId") Long id) {
-        return orderService.updateStatus(id);
+    public ResponseEntity<?> updateStatus(@PathVariable(name = "orderId") Long id) {
+        OrderDTO updatedOrder = orderService.updateStatus(id);
+        if(updatedOrder != null) {
+            return ResponseEntity.ok(updatedOrder);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update status order");
     }
 
 }

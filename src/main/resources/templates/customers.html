@@ -14,34 +14,26 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th>Mã đơn hàng</th>
-                            <th>Ngày đặt</th>
-                            <th>Tổng</th>
-                            <th>Trạng thái</th>
-                            <th>Chi tiết</th>
-                            <th>Cập nhật trạng thái</th>
+                            <th>Mã khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Tên</th>
+                            <th>Địa chỉ giao hàng</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <th:block th:each="orderItem : ${orderList}">
-                            <tr th:attr="data-id=${orderItem.id}">
+                        <th:block th:each="customer : ${customerList}">
+                            <tr th:attr="data-id=${customer.id}">
                                 <td>
-                                    <h2 class="h5 text-black" th:text="${orderItem.id}"></h2>
+                                    <h2 class="h5 text-black" th:text="${customer.id}"></h2>
                                 </td>
                                 <td>
-                                    <h2 class="h5 text-black" th:text="${orderItem.dateOrder}"></h2>
+                                    <h2 class="h5 text-primary" th:text="${customer.phone}"></h2>
                                 </td>
                                 <td>
-                                    <h2 class="h5 text-primary" th:text="${#numbers.formatDecimal(orderItem.total, 0, 'COMMA', 0, 'POINT')} + ' đ'"></h2>
+                                    <h2 class="h5 text-black" th:text="${customer.name}"></h2>
                                 </td>
                                 <td>
-                                    <h2 class="h5 text-black" th:text="${orderItem.status}"></h2>
-                                </td>
-                                <td>
-                                    <button th:attr="data-id=${orderItem.id}" type="button" class="btn btn-outline-primary btn-detail">Chi tiết</button>
-                                </td>
-                                <td>
-                                    <button th:attr="data-id=${orderItem.id}" type="button" class="btn btn-outline-info btn-update">Cập nhật</button>
+                                    <h2 class="h5 text-black" th:text="${customer.address}"></h2>
                                 </td>
                             </tr>
                         </th:block>

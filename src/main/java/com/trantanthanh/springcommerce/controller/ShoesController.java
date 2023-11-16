@@ -28,10 +28,7 @@ public class ShoesController {
     private final ShoesService shoesService;
     @GetMapping({"", "/"})
     public String index(Model model, HttpSession session) {
-        Object customerId = session.getAttribute("customerId");
-        if(customerId == null) {
-            return "redirect:/customer/login";
-        }
+
         model.addAttribute("title", "Sản phẩm");
 
         // List of brands
@@ -58,10 +55,7 @@ public class ShoesController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable("id") Long id, Model model, HttpSession session) {
-        Object customerId = session.getAttribute("customerId");
-        if(customerId == null) {
-            return "redirect:/customer/login";
-        }
+
         Shoes shoes = shoesService.getOne(id);
         model.addAttribute("shoes", shoes);
         model.addAttribute("title", shoes.getName());

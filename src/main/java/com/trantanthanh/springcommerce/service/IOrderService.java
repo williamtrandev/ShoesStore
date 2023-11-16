@@ -17,4 +17,6 @@ public interface IOrderService {
     List<OrderLineDTO> getOrderLineByOrderId(Long id);
 
     OrderDTO updateStatus(Long id);
+
+    List<Order> getOrderWithStatus(String status);
 }

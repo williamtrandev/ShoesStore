@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Staff {
+public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +24,4 @@ public class Staff {
 
     private String password;
 
-    private String role;
-
-    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
-    private List<Order> orderList;
 }

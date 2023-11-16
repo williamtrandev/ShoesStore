@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> getAllByCustomerIdOrderByIdDesc(Long id);
+
+    List<Order> findAllByStatus(String status);
 }
