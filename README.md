@@ -66,7 +66,8 @@ Spring Data JPA là một phần mở rộng của Spring để làm việc vớ
 ## ERD:
 
 ## ERD mức vật lý:
-![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/6098a72c-e5e3-4bce-bd08-df9718816b6d)
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/bdadd772-f816-4ebd-bb48-43a3c712a84e)
+
 
 ### Giải thích về ERD:
 - User đây là model chung cho cả admin và customer, mỗi customer sẽ có nhiều đơn đặt hàng và nhiều sản phẩm trong giỏ hàng.
@@ -126,7 +127,7 @@ CREATE DATABASE shoes_shopping
 2. Sau đó chạy project
 3. Import file Sql đã cung cấp sẵn để có dữ liệu
 4. Để tạo một tài khoản admin theo ý thầy có thể vào file AdminInitializer trong folder config để định nghĩa lại username và password (ở đây em đã cấu hình sẵn khi chạy ứng dụng thì tên tài khoản và mật khẩu admin mặc định sẽ là admin)
-<img src="https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/98a9fd1c-1508-48d4-9a5e-042d158dad02" width="800px">
+<img src="https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/4f9a460a-ca7b-4b67-b7e9-7fa038507890" width="800px">
 
 # API trong ứng dụng:
 
@@ -195,7 +196,8 @@ Endpoint:
 localhost:8080/api/v1/shoes/filter
 ```
 
-![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/e500b88b-5d77-4fba-ac0f-dcb3b21c826a)
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/5a760f5b-9114-4845-8f45-accd7e63a387)
+
 
 
 ### Add new shoes - Thêm một sản phẩm mới:
@@ -210,6 +212,20 @@ localhost:8080/api/v1/shoes
 ```
 
 ![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/d0ab4dc3-3c85-48de-b89b-436da34bd9a2)
+
+### Delete Shoes - Xóa sản phẩm:
+
+API này xóa một sản phẩm theo id của nó
+
+Method: DELETE
+
+Endpoint:
+```
+localhost:8080/api/v1/shoes/2
+```
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/4671fc69-2ef1-4abb-b54f-3e70ce1bd646)
+
 
 ## API Cart:
 
@@ -321,4 +337,45 @@ localhost:8080/api/v1/order/1
 ![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/5b0c7b91-c9a3-4b65-b73f-39d38db71629)
 
 
+## Security:
 
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/1655b7c6-bee5-43fe-96aa-d1cda7986026)
+
+## Giải thích một chút về Spring Security trong ứng dụng:
+
+1. Disabling CSRF Protection:
+
+- csrf((csrf) -> csrf.disable()): Tắt bảo vệ CSRF (Cross-Site Request Forgery) để cho phép các yêu cầu không cần cung cấp token CSRF. Điều này có thể hữu ích trong môi trường stateless như API hoặc khi không cần bảo vệ CSRF.
+Session Management:
+
+- sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)): Thiết lập chính sách quản lý phiên (session) với ALWAYS, tức là luôn tạo một phiên mới cho người dùng.
+Phân Quyền Truy Cập (Authorization):
+
+- authorizeHttpRequests((authorizeHttpRequests) -> { ... }): Thiết lập phân quyền truy cập cho các URL khác nhau.
+
+- requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll(): Cho phép truy cập các tài nguyên tĩnh như CSS, JS, hình ảnh mà không cần xác thực.
+  
+- requestMatchers("/api/**").permitAll(): Cho phép truy cập các endpoint API mà không cần xác thực.
+  
+- requestMatchers("/shoes/**").hasAuthority("CUSTOMER"): Yêu cầu người dùng có vai trò CUSTOMER mới có thể truy cập các đường dẫn /shoes/**.
+
+- requestMatchers("/admin/**").hasAuthority("ADMIN"): Yêu cầu người dùng có vai trò ADMIN mới có thể truy cập các đường dẫn /admin/**.
+  
+- anyRequest().authenticated(): Các yêu cầu còn lại yêu cầu người dùng được xác thực trước khi truy cập.
+  
+2. Đăng Nhập (Login):
+
+- formLogin(form -> { ... }): Cấu hình trang đăng nhập và xử lý đăng nhập.
+  
+- loginPage("/login"): Trang đăng nhập cho khách hàng.
+  
+- loginProcessingUrl("/do-login"): URL để xử lý đăng nhập của khách hàng.
+  
+- successHandler(authenticationSuccessHandler()): Xử lý sau khi đăng nhập thành công.
+
+
+Em sử dụng formLogin của Spring Security để xác thực đăng nhập cho người dùng. Khi đăng nhập thành công, em có định nghĩa một handler để routing user theo quyền của họ.
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/256fa0ad-5d5b-4113-b6d9-84c52d073be8)
+
+Đầu tiên, em lấy thông tin đăng nhập của user, sau đó set id vào cookie và session, nếu người dùng là Admin thì chuyển đến trang chủ của admin, nếu là Customer thì chuyển đến trang của customer.
