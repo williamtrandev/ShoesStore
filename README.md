@@ -65,6 +65,9 @@ Spring Data JPA là một phần mở rộng của Spring để làm việc vớ
 
 ## ERD:
 
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/e2d53a9c-c26a-4e5a-851e-57f65f60b758)
+
+
 ## ERD mức vật lý:
 ![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/bdadd772-f816-4ebd-bb48-43a3c712a84e)
 
