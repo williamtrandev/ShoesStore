@@ -1,34 +1,34 @@
 package com.trantanthanh.springcommerce.service.impl;
 
-import com.trantanthanh.springcommerce.model.Customer;
-import com.trantanthanh.springcommerce.repository.CustomerRepository;
-import com.trantanthanh.springcommerce.service.ICustomerService;
+import com.trantanthanh.springcommerce.model.User;
+import com.trantanthanh.springcommerce.repository.UserRepository;
+import com.trantanthanh.springcommerce.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CustomerService implements ICustomerService {
+public class UserService implements IUserService {
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository customerRepository;
     @Override
-    public Customer getOne(String phone) {
+    public User getOne(String phone) {
         return customerRepository.findByPhone(phone);
     }
 
     @Override
-    public Customer getById(Long id) {
+    public User getById(Long id) {
         return customerRepository.getReferenceById(id);
     }
 
     @Override
-    public Customer save(Customer customer) {
+    public User save(User customer) {
         return customerRepository.save(customer);
     }
 
     @Override
-    public List<Customer> getAll() {
+    public List<User> getAll() {
         return customerRepository.findAll();
     }
 

@@ -19,14 +19,6 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
     private final OrderService orderService;
-    @GetMapping("/login")
-    public String login(HttpSession session) {
-        Object customerId = session.getAttribute("customerId");
-        if(customerId == null) {
-            return "login";
-        }
-        return "redirect:/shoes";
-    }
 
     @GetMapping("/register")
     public String register() {
@@ -42,5 +34,6 @@ public class CustomerController {
         model.addAttribute("orderList", orderList);
         return "customer_orders";
     }
+
 
 }

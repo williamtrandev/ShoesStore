@@ -1,11 +1,8 @@
 package com.trantanthanh.springcommerce.api;
 
-import com.trantanthanh.springcommerce.dto.CustomerDTO;
-import com.trantanthanh.springcommerce.model.Admin;
-import com.trantanthanh.springcommerce.model.Customer;
-import com.trantanthanh.springcommerce.service.impl.AdminService;
-import com.trantanthanh.springcommerce.service.impl.CustomerService;
-import com.trantanthanh.springcommerce.utils.Mapping;
+import com.trantanthanh.springcommerce.api.requestDTO.AdminRequest;
+import com.trantanthanh.springcommerce.model.User;
+import com.trantanthanh.springcommerce.service.impl.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping("/api/v1/admin")
 public class AdminAPI {
-    private final AdminService adminService;
+    private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Admin adminRequest, HttpSession session) {
-        Admin admin = adminService.getOne(adminRequest.getUsername());
+    public ResponseEntity<?> login(@RequestBody AdminRequest adminRequest, HttpSession session) {
+        User admin = userService.getOne(adminRequest.getUsername());
         if(admin != null) {
             // Lưu admin id vào session
             session.setAttribute("adminId", admin.getId());

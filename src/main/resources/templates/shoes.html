@@ -34,7 +34,7 @@
                         <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                             <div class="block-4 text-center border shoes-card">
                                 <figure class="block-4-image">
-                                    <a th:href="@{'/shoes/' + ${shoes.id}}"><img th:src="@{/images/{imagePath}(imagePath=${shoes.shoesColorList[0].imagePath})}" alt="Image placeholder" class="img-fluid img-shoes"></a>
+                                    <a th:href="@{'/shoes/' + ${shoes.id}}"><img th:src="@{/public/images/{imagePath}(imagePath=${shoes.shoesColorList[0].imagePath})}" alt="Image placeholder" class="img-fluid img-shoes"></a>
                                 </figure>
                                 <div class="block-4-text p-4">
                                     <h3 class="mb-1 d-flex align-items-center justify-content-center w-100" style="height: 50px;"><a th:href="@{'/shoes/' + ${shoes.id}}" th:text="${shoes.name}"></a></h3>
@@ -111,7 +111,7 @@
                     cardHtml += `<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                             <div class="block-4 text-center border shoes-card">
                                 <figure class="block-4-image">
-                                    <a href="/shoes/${shoes.id}"><img src="/images/${shoes.shoesColorDTOList[0].imagePath}" alt="Image placeholder" class="img-fluid img-shoes"></a>
+                                    <a href="/shoes/${shoes.id}"><img src="/public/images/${shoes.shoesColorDTOList[0].imagePath}" alt="Image placeholder" class="img-fluid img-shoes"></a>
                                 </figure>
                                 <div class="block-4-text p-4">
                                     <h3 class="mb-1 d-flex justify-content-center align-items-center w-100" style="height: 50px;"><a href="shop-single.html">${shoes.name}</a></h3>
@@ -128,7 +128,7 @@
                 const imagePath = $(this).data('shoes-image');
                 $(this).closest('.shoes-card')
                     .find('.img-shoes').first()
-                    .attr('src', `images/${imagePath}`);
+                    .attr('src', `/public/images/${imagePath}`);
             })
 
             $('.btn-search').click(function() {

@@ -13,15 +13,25 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Admin {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private String phone;
+
+    private String address;
 
     private String name;
 
     private String password;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Order> orderList;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<CartItem> cartItemList;
+
+    private String role;
 
 }

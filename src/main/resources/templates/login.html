@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Đăng nhập</title>
     <meta charset="UTF-8">
@@ -15,13 +15,13 @@
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
-            <form class="login100-form validate-form p-l-55 p-r-55 p-t-178">
+            <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" th:action="@{/do-login}" method="post">
 					<span class="login100-form-title">
 						Đăng nhập
 					</span>
 
                 <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                    <input class="input100" type="text" name="phone" placeholder="Số điện thoại" id="phone">
+                    <input class="input100" type="text" name="username" placeholder="Số điện thoại" id="phone">
                     <span class="focus-input100"></span>
                 </div>
 
@@ -32,7 +32,7 @@
 
 
                 <div class="container-login100-form-btn">
-                    <button class="login100-form-btn btn-login" type="button">
+                    <button class="login100-form-btn btn-login" type="submit">
                         Đăng nhập
                     </button>
                 </div>
@@ -47,52 +47,61 @@
                     </a>
                 </div>
             </form>
+            <th:block th:if = "${param.error}">
+                <script>
+                    Swal.fire({
+                        title: "Thông báo",
+                        text: "Đăng nhập thất bại!",
+                        icon: "error"
+                    });
+                </script>
+            </th:block>
         </div>
     </div>
 </div>
 
 <script>
     $(function() {
-        $('.btn-login').click(() => {
-            const phone = $('#phone').val();
-            const password = $('#password').val();
-            if(phone.trim() === '' || password.trim() === '') {
-                Swal.fire({
-                    title: "Lưu ý",
-                    text: "Vui lòng nhập số điện thoại và mật khẩu!",
-                    icon: "question"
-                });
-            } else {
-                fetch(`/api/v1/customer/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone, password })
-                })
-                    .then(res => {
-                        if(!res.ok) throw new Error();
-                        return res.json();
-                    })
-                    .then(data => {
-                        sessionStorage.setItem("customerId", data.id);
-                        Swal.fire({
-                            title: "Thông báo",
-                            text: "Đăng nhập thành công!",
-                            icon: "success"
-                        });
-                        setTimeout(() => {
-                            window.location.href = "/shoes";
-                        }, 1000);
-                    })
-                    .catch(err => {
-                        Swal.fire({
-                            title: "Thông báo",
-                            text: "Đăng nhập thất bại!",
-                            icon: "error"
-                        });
-                    })
-            }
-
-        })
+        // $('.btn-login').click(() => {
+        //     const phone = $('#phone').val();
+        //     const password = $('#password').val();
+        //     if(phone.trim() === '' || password.trim() === '') {
+        //         Swal.fire({
+        //             title: "Lưu ý",
+        //             text: "Vui lòng nhập số điện thoại và mật khẩu!",
+        //             icon: "question"
+        //         });
+        //     } else {
+        //         fetch(`/api/v1/customer/login`, {
+        //             method: 'POST',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify({ phone, password })
+        //         })
+        //             .then(res => {
+        //                 if(!res.ok) throw new Error();
+        //                 return res.json();
+        //             })
+        //             .then(data => {
+        //                 sessionStorage.setItem("customerId", data.id);
+        //                 Swal.fire({
+        //                     title: "Thông báo",
+        //                     text: "Đăng nhập thành công!",
+        //                     icon: "success"
+        //                 });
+        //                 setTimeout(() => {
+        //                     window.location.href = "/shoes";
+        //                 }, 1000);
+        //             })
+        //             .catch(err => {
+        //                 Swal.fire({
+        //                     title: "Thông báo",
+        //                     text: "Đăng nhập thất bại!",
+        //                     icon: "error"
+        //                 });
+        //             })
+        //     }
+        //
+        // })
     })
 </script>
 </body>

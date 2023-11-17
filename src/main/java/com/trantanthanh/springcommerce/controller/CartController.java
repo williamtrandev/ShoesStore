@@ -1,15 +1,16 @@
 package com.trantanthanh.springcommerce.controller;
 
+import com.trantanthanh.springcommerce.config.UserDetails;
 import com.trantanthanh.springcommerce.model.CartItem;
-import com.trantanthanh.springcommerce.repository.CartItemRepository;
 import com.trantanthanh.springcommerce.service.impl.CartItemService;
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -18,13 +19,13 @@ import java.util.List;
 public class CartController {
     private final CartItemService cartItemService;
     @GetMapping({"", "/"})
-    public String index(Model model, HttpSession session) {
-        Object customerId = session.getAttribute("customerId");
-        if(customerId == null) {
+    public String index(Model model, Principal principal) {
+        if(principal == null) {
             return "redirect:/customer/login";
         }
         model.addAttribute("title", "Giỏ hàng");
-        Object id = session.getAttribute("customerId");
+        UserDetails customerDetails = (UserDetails) ((Authentication) principal).getPrincipal();
+        Long id = customerDetails.getId();
         List<CartItem> cartItemList = cartItemService.getAllByCustomerId((Long) id);
         model.addAttribute("cartItemList", cartItemList);
         return "cart";

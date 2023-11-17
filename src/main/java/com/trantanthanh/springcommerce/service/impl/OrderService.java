@@ -3,11 +3,11 @@ package com.trantanthanh.springcommerce.service.impl;
 import com.trantanthanh.springcommerce.dto.OrderDTO;
 import com.trantanthanh.springcommerce.dto.OrderLineDTO;
 import com.trantanthanh.springcommerce.model.CartItem;
-import com.trantanthanh.springcommerce.model.Customer;
+import com.trantanthanh.springcommerce.model.User;
 import com.trantanthanh.springcommerce.model.Order;
 import com.trantanthanh.springcommerce.model.OrderLine;
 import com.trantanthanh.springcommerce.repository.CartItemRepository;
-import com.trantanthanh.springcommerce.repository.CustomerRepository;
+import com.trantanthanh.springcommerce.repository.UserRepository;
 import com.trantanthanh.springcommerce.repository.OrderLineRepository;
 import com.trantanthanh.springcommerce.repository.OrderRepository;
 import com.trantanthanh.springcommerce.service.IOrderService;
@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class OrderService implements IOrderService {
-    private final CustomerRepository customerRepository;
+    private final UserRepository customerRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
     private final OrderLineRepository orderLineRepository;
@@ -34,7 +34,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public boolean save(Long customerId) {
-        Customer customer = customerRepository.getReferenceById(customerId);
+        User customer = customerRepository.getReferenceById(customerId);
         if(customer.getId() == null) {
             return false;
         }

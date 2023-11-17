@@ -11,6 +11,9 @@ import com.trantanthanh.springcommerce.repository.ShoesVariationRepository;
 import com.trantanthanh.springcommerce.service.impl.ShoesService;
 import com.trantanthanh.springcommerce.utils.Mapping;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,4 +52,12 @@ public class ShoesAPI {
         return Mapping.convertToListShoesVariationDTO(shoesVariationRepository.findAllWithSize(id));
     }
 
+    @DeleteMapping("/{idShoes}")
+    public ResponseEntity<?> delete(@PathVariable(name = "idShoes") Long id) {
+        Shoes shoes = shoesService.getOne(id);
+        if(shoes != null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Shoes not found");
+    }
 }

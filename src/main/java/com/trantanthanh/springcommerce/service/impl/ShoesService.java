@@ -47,7 +47,7 @@ public class ShoesService implements IShoesService {
     @Override
     public Shoes getOne(Long id) {
         Shoes shoes = shoesRepository.findOneWithColors(id);
-
+        if(shoes == null) return null;
         for(ShoesColor shoesColor : shoes.getShoesColorList()) {
             // Get list of shoes variations in each shoes color
             List<ShoesVariation> shoesVariationList = shoesVariationRepository.findAllWithSize(shoesColor.getId());
@@ -72,7 +72,7 @@ public class ShoesService implements IShoesService {
 
     @Override
     public Shoes insertOne(ShoesRequest request) {
-        String uploadDir = "src/main/resources/static/images";
+        String uploadDir = "public/images";
         Brand brand = brandRepository.getReferenceById(request.getBrandId());
         Category category = categoryRepository.getReferenceById(request.getCategoryId());
         Shoes shoes = new Shoes();

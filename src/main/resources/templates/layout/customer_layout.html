@@ -47,14 +47,21 @@
 
                     <div class="col-6 col-md-4 order-3 order-md-3 text-right">
                         <div class="site-top-icons">
-                            <ul>
-                                <li><a href="#"><span class="icon icon-person"></span></a></li>
-                                <li><a href="#"><span class="icon icon-heart-o"></span></a></li>
+                            <ul class="d-flex align-items-center justify-content-end">
+                                <li>
+                                    <a href="#" class="d-flex align-items-center">
+                                        <span class="icon icon-person mr-2"></span>
+                                        <span th:if="${#authorization.expression('isAuthenticated()')}" th:text="${#authentication.principal.user.name}" class="mr-3 text-primary has-children"></span>
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="/cart" class="site-cart">
                                         <span class="icon icon-shopping_cart"></span>
                                         <span class="count">2</span>
                                     </a>
+                                </li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}">
+                                    <a href="#" class="d-flex align-items-center ml-3"><span>Đăng xuất</span></a>
                                 </li>
                                 <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>
                             </ul>

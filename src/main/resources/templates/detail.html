@@ -94,11 +94,27 @@
                 $('.shoes-size').removeClass('active');
                 $(this).addClass('active');
             })
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i <ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) === 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
             $('.buy-now').click(function() {
                 const shoesVariationId = $('.shoes-size.active').data('shoes-variation');
                 const quantity = parseInt($('#quantity').val());
                 const price = parseInt($('.price').text().replaceAll(',', '').replaceAll('đ', ''));
-                const customerId = sessionStorage.getItem("customerId");
+                const customerId = getCookie("userid");
                 fetch(`/api/v1/cart`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

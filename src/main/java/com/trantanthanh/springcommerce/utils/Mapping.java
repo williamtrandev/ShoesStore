@@ -95,7 +95,7 @@ public class Mapping {
         return cartItemDTOList;
     }
 
-    public static CustomerDTO convertToCustomerDTO(Customer customer) {
+    public static CustomerDTO convertToCustomerDTO(User customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setPhone(customer.getPhone());
         customerDTO.setId(customer.getId());
