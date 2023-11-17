@@ -43,12 +43,41 @@ Trong Spring Boot, Annotation là cách để cung cấp metadata cho mã nguồ
 @PostMapping, @GetMapping, @PutMapping, @DeleteMapping:
   - Tương ứng với các phương thức HTTP POST, GET, PUT, DELETE.
 
+
+# Công nghệ sử dụng:
+
+## Spring Boot:
+Spring Boot là một framework phát triển dựa trên Spring Framework, được thiết kế để giúp tạo ứng dụng Java nhanh chóng và dễ dàng. Nó cung cấp cấu hình mặc định và các thư viện tích hợp sẵn để giảm bớt sự phức tạp trong việc xây dựng ứng dụng Spring.
+
+## Thymeleaf:
+Thymeleaf là một engine template dùng cho việc phát triển các giao diện người dùng trong ứng dụng web Java. Nó cho phép tích hợp mã HTML với code Java và hỗ trợ các tính năng như lặp, điều kiện, thay thế biểu thức, và binding dữ liệu.
+
+## MySQL:
+MySQL là một hệ quản trị cơ sở dữ liệu phổ biến, mã nguồn mở, có khả năng xử lý các tác vụ cơ bản và phức tạp. Nó sử dụng ngôn ngữ truy vấn SQL để tương tác với cơ sở dữ liệu.
+
+## Spring Security:
+Spring Security cung cấp cơ chế bảo mật mạnh mẽ cho các ứng dụng Spring. Nó giúp quản lý xác thực, phân quyền và bảo vệ các tài nguyên trong ứng dụng web.
+
+## Spring Data JPA:
+Spring Data JPA là một phần mở rộng của Spring để làm việc với cơ sở dữ liệu sử dụng JPA (Java Persistence API). Nó cung cấp các công cụ, thư viện và cấu trúc để tương tác với cơ sở dữ liệu thông qua các repository và hỗ trợ việc mapping đối tượng sang cấu trúc dữ liệu quan hệ.
+
 # Thiết kế cơ sở dữ liệu:
 
 ## ERD:
 
 ## ERD mức vật lý:
-![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/20ffde5c-d068-4187-a86f-d017295f3cd3)
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/6098a72c-e5e3-4bce-bd08-df9718816b6d)
+
+### Giải thích về ERD:
+- User đây là model chung cho cả admin và customer, mỗi customer sẽ có nhiều đơn đặt hàng và nhiều sản phẩm trong giỏ hàng.
+- Category là model chứa thông tin về loại giày, Brand là chứa thông tin về thương hiệu giày.
+- Mỗi một giày (Shoes) sẽ gồm id tham chiếu đến Category và Brand, mỗi giày sẽ chứa thông tin như tên giày, giá bán, mô tả chi tiết.
+- Color là bảng chứa các màu giày phổ biến được lưu sẵn trong hệ thống để tiện cho việc thêm phía admin.
+- Size là bảng size giày.
+- Giày sẽ có nhiều màu sắc khác nhau nên sẽ có bảng Shoes_color - bảng này chứa thông tin về màu sắc của giày là id tham chiếu đến Color, id tham chiếu đến giày và hình ảnh riêng tương ứng với giày (imagePath).
+- Với mỗi màu giày sẽ có nhiều size khác nhau nên sẽ có thêm bảng Shoes_variation chứa tham chiếu đến Shoes_color và tham chiếu đến size.
+- Mỗi một đơn hàng (Shoes_order) sẽ có nhiều chi tiết đơn hàng (Shoes_orderline) - chứa các thông tin như tham chiếu đến biến thể của giày, số lượng đặt và giá sản phẩm tại thời điểm mua.
+- Khi khách hàng thêm một sản phẩm vào giỏ hàng, hệ thống sẽ lưu lại vào Cart_item để tiện cho việc khi người dùng đăng nhập lại vào hệ thống sẽ vẫn còn sản phẩm trong giỏ hàng. Khi xác nhận đặt hàng, tất cả các item trong bảng này sẽ được xóa khỏi Cart_item sau khi lưu sang bảng Shoes_orderline.
 
 
 
@@ -95,7 +124,8 @@ Bên trong thư mục templates: Có một folder layout - là folder chứa cá
 CREATE DATABASE shoes_shopping
 ```
 2. Sau đó chạy project
-3. Để tạo một tài khoản admin theo ý thầy có thể vào file AdminInitializer trong folder config để định nghĩa lại username và password (ở đây em đã cấu hình sẵn khi chạy ứng dụng thì tên tài khoản và mật khẩu admin mặc định sẽ là admin)
+3. Import file Sql đã cung cấp sẵn để có dữ liệu
+4. Để tạo một tài khoản admin theo ý thầy có thể vào file AdminInitializer trong folder config để định nghĩa lại username và password (ở đây em đã cấu hình sẵn khi chạy ứng dụng thì tên tài khoản và mật khẩu admin mặc định sẽ là admin)
 <img src="https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/98a9fd1c-1508-48d4-9a5e-042d158dad02" width="800px">
 
 # API trong ứng dụng:
@@ -112,21 +142,6 @@ localhost:8080/api/v1/customer/register
 
 ![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/4c804e1f-c5ff-4b40-a4e0-fe64b6b368ef)
 
-### Login - Đăng nhập:
-Method: POST
-
-Endpoint:
-```
-localhost:8080/api/v1/customer/login
-```
-
-Login thất bại:
-
-![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/cce9d4b1-96a4-4568-ba26-5a33e544e962)
-
-Login thành công:
-
-![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/3fec822e-68b5-4b33-aaea-079c29a851de)
 
 ## API Shoes:
 
