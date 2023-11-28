@@ -57,11 +57,11 @@
                                 <li>
                                     <a href="/cart" class="site-cart">
                                         <span class="icon icon-shopping_cart"></span>
-                                        <span class="count">2</span>
+
                                     </a>
                                 </li>
                                 <li th:if="${#authorization.expression('isAuthenticated()')}">
-                                    <a href="#" class="d-flex align-items-center ml-3"><span>Đăng xuất</span></a>
+                                    <a href="/signout" class="d-flex align-items-center ml-3"><span>Đăng xuất</span></a>
                                 </li>
                                 <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>
                             </ul>

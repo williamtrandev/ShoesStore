@@ -3,6 +3,8 @@ package com.trantanthanh.springcommerce.controller;
 import com.trantanthanh.springcommerce.dto.OrderDTO;
 import com.trantanthanh.springcommerce.model.Order;
 import com.trantanthanh.springcommerce.service.impl.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +28,17 @@ public class CustomerController {
     }
 
     @GetMapping("/orders")
-    public String orders(Model model, HttpSession session) {
+    public String orders(Model model, HttpServletRequest request) {
         model.addAttribute("title", "Đơn đặt hàng");
+        Long id = null;
         model.addAttribute("activeOrder", true);
-        Long id = (Long) session.getAttribute("customerId");
+
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("userid")) {
+                id = Long.valueOf(cookie.getValue());
+            }
+        }
         List<Order> orderList = orderService.getAllOrderByCustomerId(id);
         model.addAttribute("orderList", orderList);
         return "customer_orders";

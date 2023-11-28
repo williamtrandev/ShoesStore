@@ -92,7 +92,7 @@ public class ShoesService implements IShoesService {
             shoesColor.setShoes(shoes);
             shoesColor.setColor(color);
             // File name có dạng Tên giày_Id mã màu
-            String filename = shoes.getName().toLowerCase().replaceAll(" ", "")
+            String filename = shoes.getName().toLowerCase().replaceAll(" ", "").replaceAll("'", "")
                     + "_" + scJSON.getIdColor() + ".png";
             shoesColor.setImagePath(filename);
             // Decode ảnh dạng string sang ảnh gốc và Lưu ảnh vào folder

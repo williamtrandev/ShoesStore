@@ -57,7 +57,12 @@ public class SecurityConfig {
                                 .loginProcessingUrl("/do-login") // Xử lý đăng nhập của khách hàng
                                 .successHandler(authenticationSuccessHandler()) // Xử lý thành công đăng nhập
                                 .permitAll()
-                );
+                )
+                .logout(out ->
+                        out
+                                .logoutUrl("/signout")
+                                .deleteCookies("JSESSIONID")
+                                .logoutSuccessHandler(out.getLogoutSuccessHandler()));
 
         return http.build();
     }

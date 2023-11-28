@@ -185,9 +185,21 @@
                     icon: "success"
                 });
             })
-
+            function getCookie(name) {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Kiểm tra xem cookie có bắt đầu bằng "userId="
+                    if (cookie.startsWith(name + '=')) {
+                        // Trả về giá trị của cookie
+                        return cookie.substring(name.length + 1);
+                    }
+                }
+                // Trả về null nếu không tìm thấy cookie
+                return null;
+            }
             $('.btn-order').click(function() {
-                const customerId = sessionStorage.getItem("customerId");
+                const customerId = getCookie('userid');
                 const numCartItem = $('tbody tr').length;
                 if(numCartItem === 0) {
                     Swal.fire({
