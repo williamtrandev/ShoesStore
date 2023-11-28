@@ -132,6 +132,11 @@ CREATE DATABASE shoes_shopping
 4. Để tạo một tài khoản admin theo ý thầy có thể vào file AdminInitializer trong folder config để định nghĩa lại username và password (ở đây em đã cấu hình sẵn khi chạy ứng dụng thì tên tài khoản và mật khẩu admin mặc định sẽ là admin)
 <img src="https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/4f9a460a-ca7b-4b67-b7e9-7fa038507890" width="800px">
 
+5. Url cho trang web:
+```
+localhost:8080
+```
+
 # API trong ứng dụng:
 
 ## API Customer:
