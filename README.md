@@ -387,3 +387,111 @@ Em sử dụng formLogin của Spring Security để xác thực đăng nhập c
 ![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/256fa0ad-5d5b-4113-b6d9-84c52d073be8)
 
 Đầu tiên, em lấy thông tin đăng nhập của user, sau đó set id vào cookie và session, nếu người dùng là Admin thì chuyển đến trang chủ của admin, nếu là Customer thì chuyển đến trang của customer.
+
+# Demo
+
+## Các chức năng bên phía khách hàng (Customer)
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/c7ab83fa-e4d3-4c06-b72d-0eafd5d44874)
+
+Khi đăng nhập thất bại
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/4a034003-acd7-4dca-a4a5-d2df90ef0753)
+
+Khi đăng nhập thành công sẽ vào trang chủ
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/f19afaa2-5bfd-45f4-be22-c1a67397feae)
+
+Tại trang chủ, khách hàng có thể lọc theo bộ lọc bên trái, ví dụ em sẽ thực hiện lọc các giày có giá từ 0 đến 1 triệu của có màu đen
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/75d81208-60b3-40fc-a96a-3d07cce6ed65)
+
+Lọc theo thương hiệu Biti's với giá từ 0 đến 5 triệu và có màu đen hoặc xanh
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/e4789148-a798-4652-acdb-161238430b41)
+
+Tìm kiếm theo tên gần giống
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/22b56bfc-a6be-461c-82e8-e9829acd4e26)
+
+Trang chi tiết giày
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/c794c64d-2e24-4c7b-8660-f6263295f731)
+
+Khi thêm sản phẩm vào giỏ hàng
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/2d686af2-2e8e-4532-9cb4-4ec7e8ec85b9)
+
+Trang giỏ hàng
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/037520e3-d28b-4415-9a10-16f92642a932)
+
+Em sẽ cập nhật số lượng giày lên 2 và cập nhật số lượng 
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/af6415ab-7ab3-4519-b8fd-6eebecad2b82)
+
+Xóa một sản phẩm ra khỏi giỏ
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/0cead343-8993-4293-b7bd-7f4286ac376d)
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/d4445d34-6c5a-440a-be5c-960ca38a5490)
+
+Xác nhận đặt hàng
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/9fb87c79-c081-462c-bb10-bef553ccef03)
+
+Khách hàng có thể xem lại các đơn đặt hàng của mình, các đơn đặt hàng sẽ sắp xếp theo thứ tự đơn hàng mới nhất
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/0ba68149-0782-4dc4-aba7-2fe2afb2e9ef)
+
+Chi tiết đơn hàng đã đặt
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/c64be50d-9280-42d3-bc8a-4d0fbf1bf4f3)
+
+## Các chức năng phía Admin
+
+Tại trang chủ, danh sách các đơn đặt mới sẽ được hiển thị cho Admin thấy
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/7fa572ef-bc18-4da3-8462-1e14c8566106)
+
+Admin cũng có thể xem chi tiết đơn hàng đó
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/a670f741-99d9-42e5-ae5a-60c6334fd2e1)
+
+Cập nhật trạng thái đơn hàng
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/c2d26c98-915e-424e-9b18-394430383836)
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/94ef23a6-2563-4ce7-9238-47d745ac29e3)
+
+Các đơn hàng đã hoàn thành sẽ chuyển qua danh sách các đơn đã hoàn thành
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/c2fdbf7e-29af-4fbd-aa2c-40207e2bb0c4)
+
+Tại trang quản lý giày, Admin sẽ thấy toàn bộ các giày trên hệ thống
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/8a875a93-42eb-48e0-8e26-ebedb902e557)
+
+Thêm giày mới
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/0e0bc017-1048-46fb-a674-a3df08e10457)
+
+Thêm màu sắc cho giày bằng cách nhấp vào dấu +, Admin sẽ chọn màu, các size mà giày có và chọn hình ảnh minh họa. Ví dụ em thêm giày MWC có 2 màu nâu và đen
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/1e4cb924-5581-4b26-84a1-140da89dc9f6)
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/a44c6bfe-0408-4dbb-82e1-4cac29d161a9)
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/8f081f0b-ba9d-47aa-89a2-f192249d576b)
+
+Tại trang quản lý khách hàng, Admin sẽ thấy được danh sách khách hàng trên hệ thống
+
+![image](https://github.com/WilliamTran2k3/ShoesStore/assets/102520170/696b0b41-eea2-40d5-88ec-445718820fee)
+
+
+
+
+
+
+
+
+
+
